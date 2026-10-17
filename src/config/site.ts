@@ -39,6 +39,15 @@ export const site = {
   ],
 } as const;
 
+/** Canonical production host. Builds for any other host (staging, previews) are kept out of search. */
+export const PRODUCTION_HOST = "mvaak.com";
+
+/**
+ * Whether search engines may index this build: only the production domain, unless
+ * SITE_NOINDEX=true (e.g. a staging build that reuses the production URL). Read at build time.
+ */
+export const indexable = new URL(site.url).hostname === PRODUCTION_HOST && process.env.SITE_NOINDEX !== "true";
+
 /**
  * Institutional support / associations listed in the brochure under "Backed by".
  * The precise relationship (funding, incubation, programme, research association)

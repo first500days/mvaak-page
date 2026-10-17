@@ -7,7 +7,8 @@ import { pageMetadata } from "@/lib/metadata";
 import { site } from "@/config/site";
 
 export const metadata = pageMetadata({
-  title: "Discuss a Project",
+  title: "Contact Mvaak — Discuss an AI Data Project",
+  absoluteTitle: true,
   description:
     "Start a conversation about AI training data with Mvaak — egocentric video, data collection, audio, video and text annotation, or dataset quality assurance.",
   path: "/contact",

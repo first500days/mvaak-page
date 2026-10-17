@@ -8,9 +8,9 @@ import { articleCategories, articles, formatDate } from "@/content/articles";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
-  title: "Insights on AI Training Data",
+  title: "AI Training Data Insights & Articles",
   description:
-    "Articles on dataset quality, annotation guidelines, egocentric video, inter-annotator agreement and scoping AI training data — written for the people who make these decisions.",
+    "Articles on dataset quality, annotation guidelines, egocentric video and inter-annotator agreement — for teams deciding what their AI training data needs.",
   path: "/blog",
 });
 

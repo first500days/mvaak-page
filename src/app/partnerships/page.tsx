@@ -24,9 +24,9 @@ import { gains, profiles, steps } from "@/content/partnership-program";
 import { site } from "@/config/site";
 
 export const metadata = pageMetadata({
-  title: "Partnerships — Build With Mvaak",
+  title: "Partner Programme for AI Data Collection Teams",
   description:
-    "A selective, project-based collaboration programme for small startups, technical teams and data collection operators who can execute real-world AI data projects with Mvaak.",
+    "A project-based partnership programme for startups, technical teams and data collection operators who can deliver real-world AI data projects with Mvaak.",
   path: "/partnerships",
 });
 

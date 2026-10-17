@@ -9,9 +9,10 @@ import { capacity, credentials } from "@/config/site";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
-  title: "About Mvaak",
+  title: "About Mvaak — AI Training Data Company",
+  absoluteTitle: true,
   description:
-    "Mvaak is an AI data services company building the data layer behind intelligent systems — specification, collection, annotation, validation and governance of real-world training data.",
+    "Mvaak is an AI data services company building the data layer for intelligent systems: specifying, collecting, annotating and validating real-world data.",
   path: "/about",
 });
 

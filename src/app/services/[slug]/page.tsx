@@ -8,10 +8,12 @@ import { Bullets } from "@/components/ui/bullets";
 import { FaqList, faqJsonLd } from "@/components/ui/faq";
 import { JsonLd } from "@/components/ui/json-ld";
 import { ContactCta } from "@/components/shared/contact-cta";
+import { RelatedReading } from "@/components/shared/related-reading";
 import { TrackView } from "@/components/analytics/track-view";
 import { dataTypeBySlug, dataTypePages, qualityGates } from "@/content/data-types";
 import { serviceById } from "@/content/services";
 import { pageMetadata } from "@/lib/metadata";
+import { orgRef } from "@/lib/schema";
 import { site } from "@/config/site";
 
 /**
@@ -191,16 +193,20 @@ export default async function DataTypePage({ params }: PageProps<"/services/[slu
         </ul>
       </Section>
 
+      <RelatedReading path={`/services/${page.slug}`} />
+
       <ContactCta href={`/contact?type=${page.projectType}`} cta="Discuss a Project" trackAs={`dt_final_${page.slug}`} />
 
       <JsonLd
         data={{
           "@context": "https://schema.org",
           "@type": "Service",
+          "@id": `${site.url}/services/${page.slug}#service`,
           name: page.title,
           serviceType: page.seoTitle,
           description: page.summary,
-          provider: { "@type": "Organization", name: site.name, url: site.url },
+          url: `${site.url}/services/${page.slug}`,
+          provider: orgRef,
         }}
       />
       <JsonLd data={faqJsonLd(page.faqs)} />

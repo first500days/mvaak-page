@@ -5,15 +5,16 @@ import { SectionNav } from "@/components/ui/section-nav";
 import { EngagementModels } from "@/components/home/engagement-models";
 import { Bullets } from "@/components/ui/bullets";
 import { ContactCta } from "@/components/shared/contact-cta";
+import { RelatedReading } from "@/components/shared/related-reading";
 import { TrackView } from "@/components/analytics/track-view";
 import { services } from "@/content/services";
 import { qualityGates } from "@/content/data-types";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
-  title: "AI Training Data Services",
+  title: "AI Training Data Services: Collection & Annotation",
   description:
-    "Egocentric video data, custom data collection, audio, video and text annotation, dataset quality assurance and dataset rescue — scoped to what your model has to learn.",
+    "Egocentric video, custom data collection, audio, video and text annotation, quality assurance and dataset rescue — scoped to what your model must learn.",
   path: "/services",
 });
 
@@ -127,6 +128,8 @@ export default function ServicesPage() {
 
 
       <EngagementModels />
+
+      <RelatedReading path="/services" />
 
       <ContactCta
         title="Need a custom dataset?"

@@ -30,7 +30,7 @@ export const dataTypePages: DataTypePage[] = [
     summary: "Structured audio datasets for speech, voice and audio intelligence.",
     seoTitle: "Audio Annotation & Speech Data Services",
     seoDescription:
-      "Audio annotation for speech and voice AI: transcription, timestamped segmentation, speaker diarisation, audio event classification and multilingual handling, to a written guideline.",
+      "Audio annotation for speech and voice AI: transcription, timestamped segmentation, speaker diarisation and audio event labels, done to a written guideline.",
     what: {
       heading: "A recording is not yet a dataset.",
       paragraphs: [
@@ -121,7 +121,7 @@ export const dataTypePages: DataTypePage[] = [
     summary: "Structured visual datasets for computer vision and video intelligence.",
     seoTitle: "Video Annotation Services for Computer Vision",
     seoDescription:
-      "Video annotation for computer vision: bounding boxes, object tracking, frame and clip classification, activity labelling and temporal segmentation, with consistency review across sequences.",
+      "Video annotation for computer vision: bounding boxes, object tracking, activity labels and temporal segmentation, with consistency review across sequences.",
     what: {
       heading: "The hard part is not the drawing.",
       paragraphs: [
@@ -212,7 +212,7 @@ export const dataTypePages: DataTypePage[] = [
     summary: "Structured language datasets for NLP, LLM and conversational AI.",
     seoTitle: "Text Annotation Services for NLP & LLM Data",
     seoDescription:
-      "Text annotation for NLP and LLM training: classification, named entities, intent, sentiment and span relations, with agreement checks and human validation of edge cases.",
+      "Text annotation for NLP and LLM training: classification, named entities, intent, sentiment and span relations, with agreement checks on edge cases.",
     what: {
       heading: "It looks simple until two people disagree.",
       paragraphs: [

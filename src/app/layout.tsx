@@ -5,11 +5,18 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { AnalyticsScripts } from "@/components/analytics/analytics-scripts";
 import { JsonLd } from "@/components/ui/json-ld";
-import { site } from "@/config/site";
+import { indexable, site } from "@/config/site";
+import { shareImage } from "@/lib/metadata";
+import { siteGraph } from "@/lib/schema";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], display: "swap" });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], display: "swap" });
 
+/** Search Console HTML-tag verification token, if provided at build time (not a secret). */
+const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
+
+// Defaults only. Every page sets its own title, description and self-referencing canonical
+// (src/lib/metadata.ts); no canonical is set here so a page can never inherit the homepage's.
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
@@ -18,18 +25,24 @@ export const metadata: Metadata = {
   },
   description: site.description,
   applicationName: site.name,
-  icons: { icon: "/brand/favicon.svg" },
-  alternates: { canonical: "/" },
+  icons: {
+    icon: [
+      { url: "/brand/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "48x48" },
+    ],
+    apple: { url: "/brand/apple-touch-icon.png", sizes: "180x180" },
+  },
   openGraph: {
     type: "website",
     siteName: site.name,
     locale: "en_IN",
-    url: "/",
     title: "Mvaak — Real-world demonstrations. Training-ready data.",
     description: site.description,
+    images: [shareImage],
   },
-  twitter: { card: "summary_large_image" },
-  robots: { index: true, follow: true },
+  twitter: { card: "summary_large_image", images: [shareImage] },
+  robots: indexable ? { index: true, follow: true } : { index: false, follow: true },
+  ...(googleVerification ? { verification: { google: googleVerification } } : {}),
 };
 
 export const viewport: Viewport = {
@@ -47,25 +60,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <SiteFooter />
         <AnalyticsScripts />
-        <JsonLd
-          data={{
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: site.name,
-            url: site.url,
-            logo: `${site.url}/brand/favicon.svg`,
-            email: site.email,
-            description: site.description,
-            sameAs: site.social.map((s) => s.href.split("?")[0]),
-            address: {
-              "@type": "PostalAddress",
-              streetAddress: "Moti Nagar",
-              addressLocality: site.address.locality,
-              postalCode: site.address.postalCode,
-              addressCountry: site.address.country,
-            },
-          }}
-        />
+        <JsonLd data={siteGraph()} />
       </body>
     </html>
   );

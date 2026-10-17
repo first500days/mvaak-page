@@ -1,6 +1,9 @@
 import Image from "next/image";
 import { Section } from "@/components/ui/section";
 import { ButtonLink } from "@/components/ui/button";
+import { JsonLd } from "@/components/ui/json-ld";
+import { site } from "@/config/site";
+import { FOUNDER_ID, orgRef } from "@/lib/schema";
 
 /*
  * Founder profile. Copy is limited to the name, the role and Mvaak's own published positioning:
@@ -53,6 +56,18 @@ export function FounderProfile() {
           </div>
         </div>
       </div>
+      {/* Person markup mirrors only what this section shows: name, role, photo. */}
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "@id": FOUNDER_ID,
+          name: "Shivam Pal",
+          jobTitle: "Founder & Managing Director",
+          image: `${site.url}/images/about/founder-shivam-pal.jpg`,
+          worksFor: orgRef,
+        }}
+      />
     </Section>
   );
 }

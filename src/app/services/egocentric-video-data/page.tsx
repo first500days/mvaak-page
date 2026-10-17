@@ -21,12 +21,14 @@ import {
   workflowSteps,
 } from "@/content/egocentric-collection";
 import { pageMetadata } from "@/lib/metadata";
+import { RelatedReading } from "@/components/shared/related-reading";
+import { orgRef } from "@/lib/schema";
 import { site } from "@/config/site";
 
 export const metadata = pageMetadata({
-  title: "Egocentric Data Collection for Robotics & Physical AI",
+  title: "Egocentric Video Data for Robotics & Physical AI",
   description:
-    "First-person video and structured human demonstrations for AI systems learning real-world tasks — scoped capture, annotation, quality checks and agreed deliverables.",
+    "First-person video and human demonstrations for AI systems learning real-world tasks: scoped capture, annotation, quality checks and agreed deliverables.",
   path: "/services/egocentric-video-data",
 });
 
@@ -261,6 +263,8 @@ export default function EgocentricDataCollectionPage() {
       </Section>
 
       {/* 9 — Final CTA */}
+      <RelatedReading path="/services/egocentric-video-data" />
+
       <section aria-labelledby="ego-final-title" className="relative overflow-hidden bg-navy text-on-navy">
         <div aria-hidden className="bg-grid-dark absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
         <div className="container-page relative py-[var(--spacing-section)] text-center">
@@ -289,9 +293,11 @@ export default function EgocentricDataCollectionPage() {
         data={{
           "@context": "https://schema.org",
           "@type": "Service",
+          "@id": `${site.url}/services/egocentric-video-data#service`,
           name: "Egocentric Data Collection",
           serviceType: "AI training data — egocentric human-demonstration video",
-          provider: { "@type": "Organization", name: site.name, url: site.url },
+          url: `${site.url}/services/egocentric-video-data`,
+          provider: orgRef,
           description: "First-person video data and structured human demonstrations for AI systems learning real-world tasks.",
         }}
       />

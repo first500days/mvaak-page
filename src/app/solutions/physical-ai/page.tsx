@@ -6,11 +6,15 @@ import { DataExample } from "@/components/home/data-example";
 import { QualityThatMatters } from "@/components/home/quality-that-matters";
 import { WhoWeServe } from "@/components/home/who-we-serve";
 import { ContactCta } from "@/components/shared/contact-cta";
+import { RelatedReading } from "@/components/shared/related-reading";
 import { TrackView } from "@/components/analytics/track-view";
 import { pageMetadata } from "@/lib/metadata";
+import { JsonLd } from "@/components/ui/json-ld";
+import { orgRef } from "@/lib/schema";
+import { site } from "@/config/site";
 
 export const metadata = pageMetadata({
-  title: "Robotics & Physical AI Data",
+  title: "Robotics & Physical AI Training Data",
   description:
     "How Mvaak turns real-world human activity into training data for robotics and Physical AI — the data pipeline, annotated examples and quality checks.",
   path: "/solutions/physical-ai",
@@ -59,7 +63,21 @@ export default function PhysicalAIPage() {
       <DataExample />
       <QualityThatMatters />
       <WhoWeServe />
+      <RelatedReading path="/solutions/physical-ai" />
       <ContactCta />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "@id": `${site.url}/solutions/physical-ai#service`,
+          name: "Robotics & Physical AI training data",
+          serviceType: "AI training data for robotics and Physical AI",
+          description:
+            "Real-world human activity captured, annotated and quality-checked as training data for robotics and Physical AI.",
+          url: `${site.url}/solutions/physical-ai`,
+          provider: orgRef,
+        }}
+      />
     </>
   );
 }

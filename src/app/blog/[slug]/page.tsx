@@ -4,7 +4,8 @@ import { ButtonLink, TextLink } from "@/components/ui/button";
 import { JsonLd } from "@/components/ui/json-ld";
 import { ArticleCard } from "@/components/shared/article-card";
 import { articleBySlug, articles, formatDate, relatedArticles, slugify, type ArticleBlock } from "@/content/articles";
-import { pageMetadata } from "@/lib/metadata";
+import { pageMetadata, shareImage } from "@/lib/metadata";
+import { orgRef } from "@/lib/schema";
 import { site } from "@/config/site";
 
 /**
@@ -176,8 +177,11 @@ export default async function ArticlePage({ params }: PageProps<"/blog/[slug]">)
           description: article.description,
           datePublished: article.date,
           articleSection: article.category,
-          author: { "@type": "Organization", name: site.name, url: site.url },
-          publisher: { "@type": "Organization", name: site.name, logo: { "@type": "ImageObject", url: `${site.url}/brand/favicon.svg` } },
+          // Articles are published under the company name (no individual author is credited on the site).
+          author: orgRef,
+          publisher: orgRef,
+          image: `${site.url}${shareImage.url}`,
+          inLanguage: "en",
           mainEntityOfPage: `${site.url}/blog/${article.slug}`,
         }}
       />

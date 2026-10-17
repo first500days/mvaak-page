@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Hero } from "@/components/home/hero";
 import { SolutionsOverview } from "@/components/home/solutions-overview";
 import { EgocentricHighlight } from "@/components/home/egocentric-highlight";
@@ -6,13 +5,15 @@ import { AwardsRecognition } from "@/components/home/awards-recognition";
 import { PartnershipPreview } from "@/components/home/partnership-preview";
 import { ContactCta } from "@/components/shared/contact-cta";
 import { BackedBy } from "@/components/shared/backed-by";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: { absolute: "Mvaak — Real-World Data for the Next Generation of AI" },
+export const metadata = pageMetadata({
+  title: "Mvaak — AI Training Data & Egocentric Video Collection",
+  absoluteTitle: true,
   description:
-    "Human demonstrations, structured data and quality-controlled datasets for teams building intelligent systems — egocentric video for Physical AI, data collection, annotation and quality assurance.",
-  alternates: { canonical: "/" },
-};
+    "Mvaak collects, annotates and quality-checks real-world data for AI teams: egocentric video for robotics and Physical AI, plus audio, video and text annotation.",
+  path: "/",
+});
 
 /*
  * Homepage — the essentials, with detail one click away via the header menus:
