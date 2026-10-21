@@ -52,8 +52,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <body className="flex min-h-dvh flex-col">
+    // suppressHydrationWarning is deliberately limited to <html> and <body>: browser extensions
+    // (Grammarly, Dark Reader, password managers) add attributes to these two elements before React
+    // hydrates. It applies one level deep only — mismatches inside the page still surface.
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
+      <body className="flex min-h-dvh flex-col" suppressHydrationWarning>
         <SiteHeader />
         <main id="main" className="flex-1">
           {children}

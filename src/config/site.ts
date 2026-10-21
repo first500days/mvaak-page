@@ -7,9 +7,30 @@
  * confirmed by Mvaak before public launch. See docs/CONTENT-REVIEW.md.
  */
 
+const DEFAULT_SITE_URL = "https://mvaak.com";
+
+/**
+ * Normalises NEXT_PUBLIC_SITE_URL into an absolute origin. Every `new URL(site.url)` (metadataBase,
+ * the indexable check) throws at build time on a value without a scheme, so a host setting of
+ * "mvaak.com", "www.mvaak.com" or an empty string used to fail the whole build.
+ */
+function siteUrlFromEnv(raw: string | undefined): string {
+  const value = raw?.trim();
+  if (!value) return DEFAULT_SITE_URL;
+  const withScheme = /^https?:\/\//i.test(value) ? value : `https://${value}`;
+  try {
+    const url = new URL(withScheme);
+    // The canonical host is the bare domain (www.mvaak.com has no DNS record); never canonicalise to www.
+    if (url.hostname === "www.mvaak.com") return DEFAULT_SITE_URL;
+    return url.origin;
+  } catch {
+    return DEFAULT_SITE_URL;
+  }
+}
+
 export const site = {
   name: "Mvaak",
-  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://mvaak.com").replace(/\/$/, ""),
+  url: siteUrlFromEnv(process.env.NEXT_PUBLIC_SITE_URL),
   tagline: "Real-world demonstrations. Training-ready data.",
   description:
     "Mvaak designs, collects, annotates and validates real-world data for AI teams — egocentric human-demonstration video for Physical AI, plus audio, video and text annotation with multi-stage quality assurance.",
