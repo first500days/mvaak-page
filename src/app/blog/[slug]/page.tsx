@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
+import { RichText } from "@/components/blog/rich-text";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { ButtonLink, TextLink } from "@/components/ui/button";
 import { JsonLd } from "@/components/ui/json-ld";
@@ -24,7 +26,15 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">) {
   const { slug } = await params;
   const a = articleBySlug(slug);
   if (!a) return {};
-  return pageMetadata({ title: a.title, description: a.description, path: `/blog/${a.slug}`, type: "article", publishedTime: a.date });
+  return pageMetadata({
+    title: a.seoTitle ?? a.title,
+    description: a.description,
+    path: `/blog/${a.slug}`,
+    type: "article",
+    publishedTime: a.date,
+    keywords: a.tags,
+    image: a.image ? { url: a.image.src, width: a.image.width, height: a.image.height, alt: a.image.alt } : undefined,
+  });
 }
 
 function Block({ block }: { block: ArticleBlock }) {
@@ -38,7 +48,11 @@ function Block({ block }: { block: ArticleBlock }) {
     case "h3":
       return <h3 className="mt-10 text-xl font-semibold text-ink">{block.text}</h3>;
     case "p":
-      return <p className="mt-6 text-[1.0625rem] leading-[1.8] text-ink-2">{block.text}</p>;
+      return (
+        <p className="mt-6 text-[1.0625rem] leading-[1.8] text-ink-2">
+          <RichText text={block.text} />
+        </p>
+      );
     case "quote":
       return (
         <blockquote className="my-10 border-l-2 border-accent pl-6 text-xl leading-relaxed font-medium text-balance text-ink">
@@ -53,7 +67,9 @@ function Block({ block }: { block: ArticleBlock }) {
           {block.items.map((item) => (
             <li key={item} className="flex gap-4 text-[1.0625rem] leading-[1.75] text-ink-2">
               <span aria-hidden className="mt-3 size-1.5 shrink-0 rounded-full bg-accent" />
-              <span>{item}</span>
+              <span>
+                <RichText text={item} />
+              </span>
             </li>
           ))}
         </List>
@@ -63,7 +79,9 @@ function Block({ block }: { block: ArticleBlock }) {
       return (
         <aside className="mt-10 rounded-card border border-accent-line bg-accent-soft/60 p-6">
           <p className="font-mono text-xs tracking-[0.14em] text-accent uppercase">{block.title}</p>
-          <p className="mt-3 leading-relaxed text-ink">{block.text}</p>
+          <p className="mt-3 leading-relaxed text-ink">
+            <RichText text={block.text} />
+          </p>
         </aside>
       );
   }
@@ -94,6 +112,28 @@ export default async function ArticlePage({ params }: PageProps<"/blog/[slug]">)
             <span aria-hidden>·</span>
             <span>{article.readingTime} min read</span>
           </p>
+          {article.tags && article.tags.length > 0 && (
+            <ul aria-label="Topics" className="mt-5 flex flex-wrap gap-2">
+              {article.tags.map((t) => (
+                <li key={t} className="rounded-full border border-line bg-surface px-2.5 py-1 font-mono text-[0.6875rem] tracking-wide text-ink-2">
+                  {t}
+                </li>
+              ))}
+            </ul>
+          )}
+          {article.image && (
+            <figure className="mt-10 max-w-4xl overflow-hidden rounded-card border border-line bg-navy">
+              <Image
+                src={article.image.src}
+                alt={article.image.alt}
+                width={article.image.width}
+                height={article.image.height}
+                sizes="(min-width: 1024px) 56rem, 100vw"
+                priority
+                className="aspect-video w-full object-cover"
+              />
+            </figure>
+          )}
         </div>
       </header>
 
@@ -180,7 +220,8 @@ export default async function ArticlePage({ params }: PageProps<"/blog/[slug]">)
           // Articles are published under the company name (no individual author is credited on the site).
           author: orgRef,
           publisher: orgRef,
-          image: `${site.url}${shareImage.url}`,
+          image: `${site.url}${article.image?.src ?? shareImage.url}`,
+          ...(article.tags?.length ? { keywords: article.tags.join(", ") } : {}),
           inLanguage: "en",
           mainEntityOfPage: `${site.url}/blog/${article.slug}`,
         }}

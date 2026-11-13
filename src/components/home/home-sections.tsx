@@ -20,7 +20,6 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { SampleMedia } from "./sample-media";
 import {
   capabilities,
-  captureDemos,
   captureMethods,
   monoRgbSamples,
   environments,
@@ -139,29 +138,6 @@ export function CaptureMethods() {
           lead="The rig is chosen per task. Every stream is calibrated and aligned to one timeline before it reaches you."
         />
 
-        {/* Egocentric Data Capture — real looping first-person demonstrations */}
-        <div className="mt-10 lg:mt-12">
-          <h3 className="flex items-center gap-2 font-mono text-xs tracking-[0.14em] text-brand-light uppercase">
-            <span aria-hidden className="size-2 animate-pulse rounded-full bg-success" /> Egocentric Data Capture
-          </h3>
-          <ul className="mt-4 grid gap-4 md:grid-cols-3">
-            {captureDemos.map((d) => (
-              <li key={d.id} data-reveal className="overflow-hidden rounded-card border border-navy-line-strong bg-navy-3">
-                <div className="relative aspect-video">
-                  <SampleMedia media={d.media} alt={d.alt} sizes="(min-width: 768px) 30vw, 100vw" />
-                </div>
-                <div className="p-4">
-                  <p className="font-semibold text-white">{d.title}</p>
-                  <p className="mt-1 text-sm leading-relaxed text-on-navy-muted">
-                    <span className="text-on-navy">Captured: </span>
-                    {d.captured}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-3 text-xs text-on-navy-muted">Real first-person footage from a garment factory, a building site and a storage floor — wide-angle wearable camera.</p>
-        </div>
         <ol className="mt-10 grid gap-4 md:grid-cols-2 lg:mt-12">
           {captureMethods.map((m) => (
             <li key={m.id} data-reveal className="flex flex-col overflow-hidden rounded-card border border-navy-line-strong bg-navy-3">
@@ -290,7 +266,8 @@ function ServiceMedia({ v }: { v: ServiceVisual }) {
   if (v.kind === "video")
     return (
       <>
-        <SampleMedia media={v.media} alt={v.alt} sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 100vw" controls={false} />
+        {/* Homepage keeps video to two placements; service cards show a still frame from the footage. */}
+        <Image src={v.media.poster} alt={v.alt.replace(/^Looping first-person video/, "First-person frame")} fill sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 100vw" className="object-cover" />
         <span className={cn("absolute bottom-3 left-3 bg-accent text-white", sourceBadge)}>{v.label}</span>
       </>
     );

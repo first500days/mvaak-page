@@ -19,7 +19,7 @@ export type Stat = { value: string; label: string; note: string; show: boolean }
  */
 export const stats: Stat[] = [
   // Supplied by Mvaak (November 2026).
-  { value: "1 lakh+", label: "Data delivered", note: "", show: true },
+  { value: "100,000+", label: "Data delivered", note: "", show: true },
   { value: "200+", label: "Partners", note: "", show: true },
   ...capacity.figures.map((f) => ({ ...f, show: capacity.showOnSite })),
   { value: "", label: "Hours of data delivered", note: "Awaiting an approved figure", show: false },
@@ -58,7 +58,7 @@ export const clips = {
   metalPlant: clip("metal-plant"),
   sewing: clip("sewing"),
   handloom: clip("handloom"),
-  beedi: clip("beedi"),
+  metalWork: clip("metal-work"),
   household: clip("household"),
   construction: clip("construction"),
   tiles: clip("tiles"),
@@ -122,14 +122,14 @@ export const samples: Sample[] = [
     illustrative: false,
   },
   {
-    id: "beedi",
-    task: "Hand-rolling beedis",
-    category: "Textiles & craft",
-    environment: "Home-based workshop",
+    id: "machine-tending",
+    task: "Machine tending at a spot welder",
+    category: "Manufacturing",
+    environment: "Metal fabrication unit",
     capture: EGO,
-    description: "Close, fast finger work rolling and sorting beedis on a tray — fine-grained manipulation detail.",
-    alt: "First-person video: two hands rolling beedis over a metal tray with a green bowl beside it.",
-    media: clips.beedi,
+    description: "A co-worker passes a metal panel; gloved hands position it under the welding electrode — precise two-hand placement.",
+    alt: "First-person video: gloved hands positioning a metal panel under the electrode of a green spot-welding machine.",
+    media: clips.metalWork,
     illustrative: false,
   },
   {
@@ -321,7 +321,7 @@ export const services: ServiceCard[] = [
     body: "First-person video of real tasks, captured on agreed rigs with synchronised sensor data.",
     href: "/services/egocentric-video-data",
     tags: ["RGB · stereo", "IMU"],
-    visual: { kind: "video", media: clips.beedi, alt: "Looping first-person video of two hands rolling beedis over a tray.", label: "Real capture" },
+    visual: { kind: "video", media: clips.metalWork, alt: "Looping first-person video of gloved hands positioning a metal panel at a spot-welding machine.", label: "Real capture" },
   },
   {
     n: "03",

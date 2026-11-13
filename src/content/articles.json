@@ -1,5 +1,1270 @@
 [
   {
+    "slug": "what-is-egocentric-data-physical-ai",
+    "title": "What Is Egocentric Data and Why Does Physical AI Need It?",
+    "seoTitle": "What Is Egocentric Data? Why Physical AI Needs It",
+    "description": "Egocentric data is video and sensor data recorded from the viewpoint of the person doing a task. What it captures and why robotics teams train on it.",
+    "category": "Physical AI",
+    "tags": [
+      "Egocentric video",
+      "Physical AI",
+      "Robotics",
+      "Embodied AI"
+    ],
+    "date": "2026-11-13",
+    "image": {
+      "src": "/videos/capture/metal-plant.jpg",
+      "width": 960,
+      "height": 540,
+      "alt": "First-person frame from a metal fabrication plant: gloved hands handling a large steel sheet, recorded on a wearable camera."
+    },
+    "blocks": [
+      {
+        "type": "p",
+        "text": "Most of the video that computer vision grew up on was filmed by someone watching an activity rather than doing it. A camera on a tripod, a phone held by a bystander, a broadcast feed. Egocentric data turns that around: the camera is worn by the person performing the task, so the footage shows the world the way the actor experiences it — hands in the foreground, the object just ahead, the next target entering the frame before the hand moves."
+      },
+      {
+        "type": "p",
+        "text": "That shift in viewpoint sounds cosmetic. For teams building robots and other embodied systems, it is not. This article explains what egocentric data is, what a usable egocentric dataset contains, and why Physical AI models keep coming back to it."
+      },
+      {
+        "type": "h2",
+        "text": "A working definition"
+      },
+      {
+        "type": "p",
+        "text": "Egocentric data is any recording made from the first-person perspective of an agent carrying out a task. In practice that usually means video from a head-, chest- or glasses-mounted camera, often accompanied by other streams recorded on the same body: inertial measurements (IMU), audio, depth, eye gaze, or hand pose. The defining property is not the camera model but the anchor point — the sensor moves with the actor, so every frame is implicitly expressed in the actor’s own frame of reference."
+      },
+      {
+        "type": "p",
+        "text": "That anchor point is exactly what a robot has. A manipulator with a wrist camera or a humanoid with head-mounted cameras sees the world from its own body, not from a tripod across the room. Training data that shares that geometry removes one of the largest gaps between what a model learns from and what it will face when deployed."
+      },
+      {
+        "type": "h2",
+        "text": "What egocentric footage captures that other video misses"
+      },
+      {
+        "type": "h3",
+        "text": "Hands, contact and grasp"
+      },
+      {
+        "type": "p",
+        "text": "In third-person footage, hands are small, frequently occluded by the body, and often out of focus. In first-person footage they sit near the centre of the frame for most of a task. That makes it possible to see grasp type, finger placement, the moment of contact and how force is applied — information a manipulation policy needs and a spectator camera rarely records clearly."
+      },
+      {
+        "type": "h3",
+        "text": "Intent before action"
+      },
+      {
+        "type": "p",
+        "text": "Because the camera follows the head or torso, egocentric video tends to show where attention goes before the hand moves. The target appears in the frame, the view settles, and only then does the reach begin. For models that need to anticipate the next step — not just recognise the current one — that ordering is a useful training signal."
+      },
+      {
+        "type": "h3",
+        "text": "Real task structure"
+      },
+      {
+        "type": "p",
+        "text": "Real work is rarely one clean action. It is a chain: walk to the bench, pick up a tool, reposition the part, put the tool down, check the result. Egocentric recordings of complete tasks preserve that chain, including the transitions and corrections that scripted demonstrations tend to omit. Those transitions are where many robotic systems fail."
+      },
+      {
+        "type": "h2",
+        "text": "Why Physical AI depends on it"
+      },
+      {
+        "type": "p",
+        "text": "Physical AI covers systems that perceive and act in the physical world: robot arms, mobile manipulators, humanoids, assistive devices. These systems are typically trained with some combination of imitation learning, reinforcement learning and large pretrained vision or vision-language models. Each of those routes benefits from human first-person data in a different way."
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Imitation learning needs demonstrations. Human egocentric video is the cheapest way to collect large numbers of demonstrations across many environments, even when they are later retargeted to robot embodiments.",
+          "Representation learning needs diverse, realistic visual input. Pretraining visual encoders on first-person footage of hands and objects gives downstream policies features that already emphasise contact and manipulation.",
+          "Task and progress models need temporal structure. Segmented egocentric episodes teach a model what step comes next and when a step is complete."
+        ]
+      },
+      {
+        "type": "p",
+        "text": "None of this replaces robot data collected on the target hardware. It reduces how much of that expensive data is needed, and it covers environments and long-tail situations that would be impractical to reach with a robot."
+      },
+      {
+        "type": "h2",
+        "text": "What a usable egocentric dataset contains"
+      },
+      {
+        "type": "p",
+        "text": "Raw first-person video is a starting point, not a dataset. The teams that get value from egocentric data usually specify a package along these lines:"
+      },
+      {
+        "type": "ol",
+        "items": [
+          "Video at a resolution and frame rate that keep hands and small objects legible, with a documented lens and field of view.",
+          "Synchronised side streams such as IMU, aligned to frame timestamps so head motion can be separated from object motion.",
+          "Episode boundaries: a clear start and end for each task instance, not hours of continuous footage.",
+          "Temporal segmentation into sub-actions (reach, grasp, lift, place) with a written definition of each boundary.",
+          "Metadata on environment, task, capture rig and consent, so the data can be filtered and audited later.",
+          "Delivery in a format the training stack already reads, for example LeRobot, RLDS or MCAP."
+        ]
+      },
+      {
+        "type": "p",
+        "text": "The difference between footage and training data is mostly in items two to five. We cover that conversion in more detail in [From Raw Video to Training-Ready Data](/blog/raw-video-to-training-ready-data-pipeline)."
+      },
+      {
+        "type": "h2",
+        "text": "Common pitfalls"
+      },
+      {
+        "type": "p",
+        "text": "Egocentric collection has its own failure modes. Wide-angle lenses distort straight lines and object scale near the edges of the frame. Head motion can be fast enough to blur exactly the moment of contact. Collectors who know they are being recorded slow down and perform tasks unnaturally. And footage gathered in one kind of environment tends to produce models that only work there — a topic we expand on in [Why Environmental Diversity Matters in Robotics Training Datasets](/blog/environmental-diversity-robotics-datasets)."
+      },
+      {
+        "type": "p",
+        "text": "Each of these is manageable with deliberate capture protocols: a fixed mounting position, calibrated lenses, briefings that ask collectors to work at their normal pace, and an environment plan written before collection starts."
+      },
+      {
+        "type": "callout",
+        "title": "In practice",
+        "text": "If you are scoping an egocentric dataset, write down the tasks, the environments and the action vocabulary first. Those three lists determine almost every later decision, from rig choice to annotation guidelines."
+      },
+      {
+        "type": "h2",
+        "text": "Conclusion"
+      },
+      {
+        "type": "p",
+        "text": "Egocentric data matters to Physical AI because it is recorded from the same place a robot perceives from, and because it shows the part of a task models find hardest: hands making contact with real objects in real, untidy environments. Its value depends on what surrounds the video — synchronisation, segmentation, metadata and consistent quality checks."
+      },
+      {
+        "type": "p",
+        "text": "Mvaak records and annotates first-person video of real tasks for robotics and Physical AI teams. See [Egocentric Video Data](/services/egocentric-video-data) for how collection works, or [Physical AI data](/solutions/physical-ai) for how datasets are delivered. For a related read, see [Why first-person video is different](/blog/why-first-person-video-is-different)."
+      }
+    ],
+    "readingTime": 5
+  },
+  {
+    "slug": "real-world-human-activities-train-robotics",
+    "title": "How Real-World Human Activities Help Train Robotics Systems",
+    "seoTitle": "How Real-World Human Activities Train Robots",
+    "description": "How human activity data is used in robot learning — perception pretraining, task structure and imitation — and what makes it transfer to a robot.",
+    "category": "Robotics",
+    "tags": [
+      "Robot learning",
+      "Imitation learning",
+      "Human demonstrations",
+      "Egocentric video"
+    ],
+    "date": "2026-11-13",
+    "image": {
+      "src": "/videos/capture/household.jpg",
+      "width": 960,
+      "height": 540,
+      "alt": "First-person frame of a home kitchen: one hand holds a plastic container while the other works near the stove."
+    },
+    "blocks": [
+      {
+        "type": "p",
+        "text": "Teaching a robot a new task by teleoperating it hundreds of times works, but it is slow and expensive, and it only ever shows the robot the environments its operators could reach. People, meanwhile, perform the same tasks millions of times a day in kitchens, workshops, warehouses and building sites. Recording that activity — carefully — is one of the most practical ways to give robot learning systems the breadth they lack."
+      },
+      {
+        "type": "p",
+        "text": "This article looks at how human activity data is actually used in robotics, which properties make it transferable to a robot, and where its limits are."
+      },
+      {
+        "type": "h2",
+        "text": "Three ways robots learn from people"
+      },
+      {
+        "type": "h3",
+        "text": "1. Pretraining perception"
+      },
+      {
+        "type": "p",
+        "text": "The most widespread use is indirect. Visual encoders pretrained on large amounts of human activity video learn features that emphasise hands, objects and interactions. When those encoders are fine-tuned on a smaller set of robot data, policies tend to learn faster and generalise better than encoders trained on generic images, because the features already encode what matters for manipulation."
+      },
+      {
+        "type": "h3",
+        "text": "2. Learning task structure"
+      },
+      {
+        "type": "p",
+        "text": "Human episodes segmented into steps teach a model what a task is made of: which sub-actions occur, in what order, and what the scene looks like when each one is complete. That knowledge powers task planners, progress estimators and reward models — components that tell a robot whether it is on track, not just how to move."
+      },
+      {
+        "type": "h3",
+        "text": "3. Direct imitation through retargeting"
+      },
+      {
+        "type": "p",
+        "text": "The most ambitious use maps human motion directly onto a robot. Hand trajectories and grasp poses extracted from video are retargeted to a gripper or dexterous hand, then refined with a smaller amount of on-robot data. This route depends heavily on data quality: if hand pose cannot be recovered reliably from the footage, nothing downstream can fix it."
+      },
+      {
+        "type": "h2",
+        "text": "What makes human data transferable"
+      },
+      {
+        "type": "p",
+        "text": "Not every recording of people working is useful to a robot. The properties that decide transferability are fairly consistent across projects."
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Viewpoint. First-person footage shares the geometry of a robot’s head or wrist camera far more closely than footage from a fixed camera across the room. See [Egocentric Video vs Third-Person Video](/blog/egocentric-vs-third-person-video) for the trade-offs.",
+          "Visible contact. Hands and the manipulated object need to be in frame and in focus at the moment of grasp and release.",
+          "Complete episodes. Clips that start mid-reach or end before the object is placed teach fragments, not tasks.",
+          "Natural pace. Collectors who rush or perform for the camera produce motion a robot should not copy.",
+          "Documented rigs. Lens, field of view and mounting position need to be known so footage can be undistorted and compared."
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Real activities beat staged ones"
+      },
+      {
+        "type": "p",
+        "text": "It is tempting to collect demonstrations in a lab, with tidy benches and a fixed set of objects. Those datasets are easy to annotate and almost useless for generalisation. Real environments contain clutter, wear, variable lighting, other people and objects nobody planned for. A model that has seen a sewing station covered in fabric offcuts, or a storage floor with crates stacked at odd angles, is better prepared for deployment than one that has only seen a clean demonstration table."
+      },
+      {
+        "type": "p",
+        "text": "Real work also contains the behaviour that matters most for robustness: regrasping after a slip, adjusting an object that landed badly, pausing to look for a tool. These recoveries are rare in scripted data and common in genuine activity."
+      },
+      {
+        "type": "h2",
+        "text": "The embodiment gap"
+      },
+      {
+        "type": "p",
+        "text": "Human hands are not grippers. A person can pinch, roll and slide an object between fingers in ways a two-finger gripper cannot. Human data therefore rarely transfers one-to-one. What transfers well is the higher-level content: where to look, which object to approach, the order of steps, approximate approach direction and contact location. What transfers poorly is fine finger motion — unless the target robot has a dexterous hand."
+      },
+      {
+        "type": "p",
+        "text": "The practical consequence is that human activity data is most valuable when it is combined with a modest amount of robot data on the target embodiment, rather than used as a replacement for it."
+      },
+      {
+        "type": "h2",
+        "text": "Designing a human activity dataset for robotics"
+      },
+      {
+        "type": "ol",
+        "items": [
+          "Start from the deployment task and environment, not from whatever footage is easiest to collect.",
+          "Define an action vocabulary with written boundary rules before annotation begins.",
+          "Choose capture rigs that match the robot’s sensing as closely as practical — field of view, mounting height, depth if the robot uses depth.",
+          "Plan environment coverage deliberately: several sites per task, not one site recorded at length.",
+          "Agree acceptance criteria — what makes an episode usable — and check every delivery against them."
+        ]
+      },
+      {
+        "type": "p",
+        "text": "Our guide on [how to scope a first dataset](/blog/how-to-scope-a-first-dataset) walks through the scoping conversation in more detail."
+      },
+      {
+        "type": "callout",
+        "title": "Rule of thumb",
+        "text": "If you cannot write down what the robot should have learned from an episode, the episode probably should not be in the dataset."
+      },
+      {
+        "type": "h2",
+        "text": "Conclusion"
+      },
+      {
+        "type": "p",
+        "text": "Real-world human activity is the largest untapped source of manipulation experience available to robotics teams. Used well — first-person, complete, natural and documented — it shortens the path from a policy that works in the lab to one that works on site. Used carelessly, it adds volume without adding capability."
+      },
+      {
+        "type": "p",
+        "text": "Mvaak collects first-person recordings of real tasks across homes, workshops and industrial sites, segmented and checked for robotics use. Learn more on our [Physical AI data](/solutions/physical-ai) page or read [What Is Egocentric Data and Why Does Physical AI Need It?](/blog/what-is-egocentric-data-physical-ai)."
+      }
+    ],
+    "readingTime": 4
+  },
+  {
+    "slug": "multimodal-data-future-of-ai",
+    "title": "The Role of Multimodal Data in the Future of Artificial Intelligence",
+    "seoTitle": "The Role of Multimodal Data in AI",
+    "description": "Why AI models increasingly train on vision, audio, text and motion together, and what multimodal datasets must get right: sync, gaps and labels.",
+    "category": "Multimodal AI",
+    "tags": [
+      "Multimodal AI",
+      "Sensor fusion",
+      "Vision-language models",
+      "Data synchronisation"
+    ],
+    "date": "2026-11-13",
+    "image": {
+      "src": "/videos/capture/handloom.jpg",
+      "width": 960,
+      "height": 540,
+      "alt": "First-person frame looking down at hands working a handloom with purple and green striped fabric."
+    },
+    "blocks": [
+      {
+        "type": "p",
+        "text": "A person learning to use a loom does not rely on sight alone. They hear the shuttle, feel the tension of the threads, notice the rhythm of their own movement and follow spoken instructions. Each signal fills gaps the others leave. Multimodal AI rests on the same observation: models that combine several kinds of input are more capable, and more robust, than models limited to one."
+      },
+      {
+        "type": "p",
+        "text": "This article covers what multimodal data is, why it is becoming central to AI systems — especially those that act in the physical world — and the data engineering problems that decide whether a multimodal dataset is actually useful."
+      },
+      {
+        "type": "h2",
+        "text": "What counts as multimodal data"
+      },
+      {
+        "type": "p",
+        "text": "A dataset is multimodal when each example contains more than one type of signal describing the same moment or event. Common combinations include:"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Video with aligned audio and transcribed speech.",
+          "Images or video with natural-language descriptions or instructions.",
+          "First-person video with inertial (IMU) data from the same headset or body-worn device.",
+          "RGB video with depth, from stereo pairs or a depth sensor.",
+          "Robot camera streams with joint states, gripper commands and force readings."
+        ]
+      },
+      {
+        "type": "p",
+        "text": "The value lies in the relationship between the streams. A clip and an unrelated caption are two datasets stored side by side, not one multimodal dataset."
+      },
+      {
+        "type": "h2",
+        "text": "Why AI is moving toward multimodality"
+      },
+      {
+        "type": "h3",
+        "text": "Grounding"
+      },
+      {
+        "type": "p",
+        "text": "Language models know a great deal about the world in words. Pairing language with images, video and motion grounds those words in what objects look like and how they behave. Vision-language and vision-language-action models are the direct result: systems that can follow an instruction such as “put the red cup on the shelf” because they have learned what the instruction refers to visually."
+      },
+      {
+        "type": "h3",
+        "text": "Disambiguation"
+      },
+      {
+        "type": "p",
+        "text": "Single modalities are ambiguous. In video alone, a hand hovering over a stove might be cooking or reaching past it. Audio of a sizzle, a spoken instruction or IMU data showing the wearer turning away resolves the ambiguity. Combining signals improves accuracy precisely on the hard cases."
+      },
+      {
+        "type": "h3",
+        "text": "Robustness"
+      },
+      {
+        "type": "p",
+        "text": "When one sensor degrades — low light, motion blur, background noise — another can carry the prediction. Systems deployed in real environments, from assistive devices to warehouse robots, need that redundancy."
+      },
+      {
+        "type": "h2",
+        "text": "Multimodal data for Physical AI"
+      },
+      {
+        "type": "p",
+        "text": "Robots are multimodal by construction: cameras, joint encoders, force-torque sensors, sometimes microphones. Training data that mirrors that structure lets models learn the correlations they will rely on at run time. In egocentric collection this usually means first-person RGB video combined with IMU data that records head motion, so a model can tell camera movement apart from object movement, plus temporal labels describing what the wearer is doing. Some projects add stereo video for depth, covered in [Stereo vs Mono-RGB Capture](/blog/stereo-vs-mono-rgb-capture)."
+      },
+      {
+        "type": "h2",
+        "text": "What multimodal datasets get wrong"
+      },
+      {
+        "type": "h3",
+        "text": "Synchronisation"
+      },
+      {
+        "type": "p",
+        "text": "The most common and most damaging problem is misalignment. If IMU samples are offset from video frames by even a fraction of a second, a model learns the wrong relationship between motion and image. Every stream needs timestamps from a shared or calibrated clock, and the alignment should be verified, not assumed."
+      },
+      {
+        "type": "h3",
+        "text": "Missing or partial streams"
+      },
+      {
+        "type": "p",
+        "text": "Sensors drop out. Audio clips, IMU buffers overflow, a depth camera fails in sunlight. A dataset needs a policy for partial episodes — exclude, flag or impute — and the policy must be documented so model builders know what they are training on."
+      },
+      {
+        "type": "h3",
+        "text": "Inconsistent labels across modalities"
+      },
+      {
+        "type": "p",
+        "text": "When transcripts, action labels and object labels are produced by different teams, their boundaries rarely line up. A spoken instruction might be labelled as starting half a second before the action it describes. Shared annotation guidelines and a common timeline prevent this. Our article on [annotation guidelines](/blog/annotation-guidelines-are-the-real-deliverable) explains why the guideline is the real deliverable."
+      },
+      {
+        "type": "h2",
+        "text": "A checklist for multimodal collection"
+      },
+      {
+        "type": "ol",
+        "items": [
+          "List the modalities the model will see in deployment, and collect those first.",
+          "Calibrate sensors and record calibration files with each session.",
+          "Use a single timeline for all labels, expressed in a documented time base.",
+          "Validate synchronisation on a sample of every delivery.",
+          "Ship a manifest describing which streams each episode contains and their quality flags."
+        ]
+      },
+      {
+        "type": "callout",
+        "title": "Note",
+        "text": "More modalities are not automatically better. Each additional stream adds cost to capture, storage, synchronisation and QA. Add a modality when you can name the failure it will fix."
+      },
+      {
+        "type": "h2",
+        "text": "Conclusion"
+      },
+      {
+        "type": "p",
+        "text": "Multimodal data is becoming the default input for capable AI systems because the world itself is multimodal. The opportunity is large, but it is unlocked by careful data engineering: synchronised streams, consistent labels and honest documentation of gaps."
+      },
+      {
+        "type": "p",
+        "text": "Mvaak collects and annotates video, audio and text data, including egocentric video with aligned sensor streams. Explore our [video annotation](/services/video-annotated-data), [audio annotation](/services/audio-annotated-data) and [egocentric video](/services/egocentric-video-data) services."
+      }
+    ],
+    "readingTime": 3
+  },
+  {
+    "slug": "egocentric-vs-third-person-video",
+    "title": "Egocentric Video vs Third-Person Video: Understanding the Difference",
+    "seoTitle": "Egocentric vs Third-Person Video for AI Training",
+    "description": "First-person and third-person video record the same activity very differently. How each viewpoint affects what a model learns, and how to choose.",
+    "category": "Computer Vision",
+    "tags": [
+      "Egocentric video",
+      "Third-person video",
+      "Camera viewpoint",
+      "Action recognition"
+    ],
+    "date": "2026-11-13",
+    "image": {
+      "src": "/videos/capture/sewing.jpg",
+      "width": 960,
+      "height": 540,
+      "alt": "First-person frame at an industrial sewing machine: both hands folding light-blue fabric."
+    },
+    "blocks": [
+      {
+        "type": "p",
+        "text": "Point one camera at a person folding fabric at a sewing station and strap another to their head, and you get two very different recordings of the same minute of work. The first shows the person, the station and the room. The second shows two hands, the fabric and the machine, moving with every turn of the head. Neither is better in general. Each is better at teaching a model something specific."
+      },
+      {
+        "type": "p",
+        "text": "This article compares egocentric (first-person) and third-person (exocentric) video for AI training, so you can choose the right viewpoint — or the right mix — for a project."
+      },
+      {
+        "type": "h2",
+        "text": "Definitions"
+      },
+      {
+        "type": "p",
+        "text": "Egocentric video is recorded by a camera worn by the person performing the activity, usually on the head, chest or glasses. Third-person video is recorded by a camera that is not attached to the actor: fixed on a tripod or wall, handheld by someone else, or mounted on a moving platform. Third-person footage from a single standard camera is often called mono-RGB."
+      },
+      {
+        "type": "h2",
+        "text": "What each viewpoint sees"
+      },
+      {
+        "type": "h3",
+        "text": "Egocentric"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Hands and manipulated objects are large, central and usually unoccluded by the body.",
+          "The view follows attention, so the next target often appears before the hand moves.",
+          "The wearer’s body is mostly invisible; posture and full-body motion must be inferred from IMU data or not at all.",
+          "Camera motion is constant and sometimes fast, so footage can blur and stabilisation matters.",
+          "Wide-angle lenses are common, which introduces distortion near frame edges."
+        ]
+      },
+      {
+        "type": "h3",
+        "text": "Third-person"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "The full body, posture and spatial relationship to the environment are visible.",
+          "Fixed cameras produce stable footage, which is easier to annotate and track over time.",
+          "Hands are smaller and are often hidden by the torso, the object itself or other people.",
+          "Multiple people and their interactions can be observed at once.",
+          "A single view lacks depth, but several calibrated views can reconstruct 3D motion."
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "How the choice affects model training"
+      },
+      {
+        "type": "h3",
+        "text": "Manipulation and grasping"
+      },
+      {
+        "type": "p",
+        "text": "For learning how hands interact with objects — grasp type, contact points, in-hand adjustments — egocentric video is usually the stronger source. The detail is simply present in the pixels. It also matches the viewpoint of robots with head or wrist cameras, which reduces the domain gap at deployment."
+      },
+      {
+        "type": "h3",
+        "text": "Activity recognition and safety monitoring"
+      },
+      {
+        "type": "p",
+        "text": "For recognising what people are doing in a space — whether a worker has entered a restricted zone, whether a patient has fallen, how a line operator moves between stations — third-person footage is usually better. These systems will themselves be deployed on fixed cameras, so training on that viewpoint is the natural fit."
+      },
+      {
+        "type": "h3",
+        "text": "Pose estimation"
+      },
+      {
+        "type": "p",
+        "text": "Full-body pose is far easier to label from a third-person view. Hand pose is far easier from a first-person view. Projects that need both often pair a head-mounted camera with one or more fixed cameras, synchronised in time."
+      },
+      {
+        "type": "h2",
+        "text": "Annotation differences"
+      },
+      {
+        "type": "p",
+        "text": "Annotating egocentric video has its own challenges. Objects enter and leave the frame quickly as the head moves, so object tracks are shorter and identity must be re-established often. Motion blur can hide the exact frame of contact, so temporal boundary rules need to say how to handle it. Third-person video makes tracking easier but makes hand-level labels harder, because the hands are small and frequently occluded — a problem discussed in [The occlusion problem in video annotation](/blog/the-occlusion-problem-in-video-annotation)."
+      },
+      {
+        "type": "h2",
+        "text": "Combining viewpoints"
+      },
+      {
+        "type": "p",
+        "text": "Paired ego-exo recordings — the same activity captured simultaneously from a worn camera and one or more external cameras — are increasingly common in research. They let a model learn the correspondence between what the actor sees and what an observer sees. That correspondence is useful for transferring skills from observation to action, and for systems that must reason about a person from the outside while assisting them."
+      },
+      {
+        "type": "p",
+        "text": "The cost is synchronisation and calibration. Every camera must share a time base, and if 3D reconstruction is needed, external cameras must be calibrated relative to each other."
+      },
+      {
+        "type": "h2",
+        "text": "How to choose"
+      },
+      {
+        "type": "ol",
+        "items": [
+          "Start from the deployed sensor. If the model will run on a head or wrist camera, collect egocentric. If it will run on a ceiling camera, collect third-person.",
+          "Identify the critical detail. Fingers and contact favour egocentric; posture and spatial layout favour third-person.",
+          "Consider annotation cost for the labels you need, not just capture cost.",
+          "If both matter, budget for paired capture and synchronisation rather than collecting two unrelated datasets."
+        ]
+      },
+      {
+        "type": "callout",
+        "title": "Quick test",
+        "text": "Watch a sample clip with the sound off and ask whether a human annotator could label the event your model must learn. If the answer is no from one viewpoint, that viewpoint is the wrong one for the task."
+      },
+      {
+        "type": "h2",
+        "text": "Conclusion"
+      },
+      {
+        "type": "p",
+        "text": "Egocentric and third-person video are complementary rather than competing. First-person footage carries the detail of interaction; third-person footage carries context, posture and the relationship between people and space. The right choice follows from where the model will be deployed and which detail it cannot do without."
+      },
+      {
+        "type": "p",
+        "text": "Mvaak collects egocentric video for robotics and Physical AI and annotates video data for computer vision. See [Egocentric Video Data](/services/egocentric-video-data) and [Video annotation](/services/video-annotated-data), or read [What Is Egocentric Data and Why Does Physical AI Need It?](/blog/what-is-egocentric-data-physical-ai)."
+      }
+    ],
+    "readingTime": 4
+  },
+  {
+    "slug": "data-annotation-improves-computer-vision-models",
+    "title": "How High-Quality Data Annotation Improves Computer Vision Models",
+    "seoTitle": "How Data Annotation Quality Improves CV Models",
+    "description": "Annotation quality sets the ceiling for a computer vision model. Which labelling errors hurt most, and what a high-quality annotation process looks like.",
+    "category": "Data Annotation",
+    "tags": [
+      "Data annotation",
+      "Computer vision",
+      "Bounding boxes",
+      "Label noise"
+    ],
+    "date": "2026-11-13",
+    "image": {
+      "src": "/images/egocentric/ego-screwdriver.jpg",
+      "width": 765,
+      "height": 476,
+      "alt": "Illustrative first-person frame with a labelled bounding box around a screwdriver held in gloved hands."
+    },
+    "blocks": [
+      {
+        "type": "p",
+        "text": "A computer vision model can only be as consistent as the labels it learns from. Architecture and training recipe matter, but when two teams train similar models on the same images and get very different results, the explanation is often in the annotation: how boxes were drawn, how ambiguous cases were resolved, and whether those decisions were applied the same way every time."
+      },
+      {
+        "type": "p",
+        "text": "This article looks at how annotation quality affects computer vision models in practice, which kinds of error do the most damage, and what a high-quality annotation process looks like."
+      },
+      {
+        "type": "h2",
+        "text": "Labels are the specification"
+      },
+      {
+        "type": "p",
+        "text": "Supervised models do not learn the task you had in mind. They learn the mapping your labels describe. If annotators sometimes include a shadow inside a bounding box and sometimes do not, the model learns that boxes have an uncertain edge. If “cup” and “mug” are used interchangeably, the model learns a muddled boundary between them. Every annotation decision is, in effect, a line in the specification of the model."
+      },
+      {
+        "type": "h2",
+        "text": "The errors that matter most"
+      },
+      {
+        "type": "h3",
+        "text": "Systematic errors"
+      },
+      {
+        "type": "p",
+        "text": "Random noise — a box a few pixels off in either direction — is partly averaged out by training on many examples. Systematic error is not. If one annotator always draws boxes tight and another always draws them loose, or if a class is consistently missed in dark scenes, the model faithfully learns the bias. Systematic errors are the most damaging precisely because they look like signal."
+      },
+      {
+        "type": "h3",
+        "text": "Missing labels"
+      },
+      {
+        "type": "p",
+        "text": "An object present in an image but not labelled is taught to the model as background. For detection models this directly suppresses recall: the model is penalised for finding the very objects it should find. Missing labels cluster in hard cases — small, occluded or partially visible objects — which are often the cases the model most needs to learn."
+      },
+      {
+        "type": "h3",
+        "text": "Inconsistent class boundaries"
+      },
+      {
+        "type": "p",
+        "text": "Most taxonomies have grey zones. Is a person holding a phone to their ear “talking” or “holding phone”? Is a half-open drawer “open”? Without written rules for these cases, different annotators decide differently, and the model sees contradictory examples for the same visual pattern."
+      },
+      {
+        "type": "h3",
+        "text": "Temporal errors in video"
+      },
+      {
+        "type": "p",
+        "text": "In video, labels have a time dimension. An action that starts three frames late in one clip and three frames early in another teaches a model a blurred notion of when actions begin. For tasks such as temporal segmentation or action anticipation, boundary consistency matters as much as spatial accuracy."
+      },
+      {
+        "type": "h2",
+        "text": "What high-quality annotation looks like"
+      },
+      {
+        "type": "h3",
+        "text": "A written guideline with examples"
+      },
+      {
+        "type": "p",
+        "text": "Good annotation starts with a guideline that defines every class, every attribute and every boundary rule, illustrated with positive and negative examples and the hard cases already found. The guideline is a living document; it changes as new edge cases appear. We argue in [Annotation guidelines are the real deliverable](/blog/annotation-guidelines-are-the-real-deliverable) that it is the most valuable artefact a labelling project produces."
+      },
+      {
+        "type": "h3",
+        "text": "Calibration before production"
+      },
+      {
+        "type": "p",
+        "text": "Before labelling at volume, annotators label the same sample and compare results. Disagreements reveal unclear guideline sections, which are fixed before production starts. This is far cheaper than discovering inconsistency after thousands of items are done."
+      },
+      {
+        "type": "h3",
+        "text": "Measured agreement"
+      },
+      {
+        "type": "p",
+        "text": "Inter-annotator agreement — IoU for boxes, boundary distance for segments, kappa-style statistics for classes — is the most useful early indicator of label quality, because it can be measured without ground truth. See [Inter-annotator agreement: what it tells you](/blog/inter-annotator-agreement-what-it-tells-you)."
+      },
+      {
+        "type": "h3",
+        "text": "Multi-stage review"
+      },
+      {
+        "type": "p",
+        "text": "A second reviewer checks a defined share of every batch, with closer review of difficult classes and new annotators. Rejected items go back with a reason, and recurring reasons feed back into the guideline."
+      },
+      {
+        "type": "h2",
+        "text": "Matching annotation type to the model"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Classification needs consistent class assignment, especially for near-duplicates.",
+          "Object detection needs complete coverage and a consistent box-tightness rule.",
+          "Instance and semantic segmentation need precise edges; budget for it, as it costs far more per item.",
+          "Keypoints and hand pose need visibility flags so occluded points are not guessed silently.",
+          "Tracking needs stable identities across frames, including through occlusion.",
+          "Temporal segmentation needs boundary rules expressed in observable events, not intent."
+        ]
+      },
+      {
+        "type": "callout",
+        "title": "Practical tip",
+        "text": "Before buying more data, audit a few hundred existing labels against the guideline. If the error rate on hard cases is high, relabelling those cases often improves a model more than collecting new data."
+      },
+      {
+        "type": "h2",
+        "text": "Conclusion"
+      },
+      {
+        "type": "p",
+        "text": "Annotation quality is not a cosmetic property of a dataset. It sets the ceiling on what a computer vision model can learn and determines how predictably it behaves on hard cases. The process that produces quality — a clear guideline, calibration, measured agreement and structured review — is well understood. The difference between projects is whether it is actually followed."
+      },
+      {
+        "type": "p",
+        "text": "Mvaak labels video, audio and text to a written guideline with multi-stage review. See [Video annotation](/services/video-annotated-data) for detection, tracking and temporal segmentation, or read [The Importance of Data Quality Assurance in AI Training](/blog/data-quality-assurance-ai-training)."
+      }
+    ],
+    "readingTime": 4
+  },
+  {
+    "slug": "environmental-diversity-robotics-datasets",
+    "title": "Why Environmental Diversity Matters in Robotics Training Datasets",
+    "seoTitle": "Environmental Diversity in Robotics Training Data",
+    "description": "Robots trained in one environment often fail in the next. Why diversity of site, lighting, objects and people matters, and how to plan coverage.",
+    "category": "Robotics",
+    "tags": [
+      "Robotics",
+      "Generalisation",
+      "Dataset coverage",
+      "Domain shift"
+    ],
+    "date": "2026-11-13",
+    "image": {
+      "src": "/videos/capture/battery.jpg",
+      "width": 960,
+      "height": 540,
+      "alt": "First-person frame on an industrial storage floor: a yellow pallet jack between stacked red crates and blue containers."
+    },
+    "blocks": [
+      {
+        "type": "p",
+        "text": "A manipulation policy that achieves impressive success rates in the lab where it was trained can fail on its first visit to a real site. The robot has not changed. The environment has: different lighting, a different bench height, unfamiliar objects, clutter that was not there before. This is domain shift, and for robotics it is one of the most persistent obstacles between a promising demo and a deployable system."
+      },
+      {
+        "type": "p",
+        "text": "The most reliable defence is training data that already contains the variety the robot will meet. This article explains which kinds of diversity matter, why, and how to plan coverage without collecting endlessly."
+      },
+      {
+        "type": "h2",
+        "text": "Why models overfit to places"
+      },
+      {
+        "type": "p",
+        "text": "Learning systems take shortcuts. If every training example of “place the part in the bin” shows the same blue bin on the same grey floor under the same lights, a model can solve the task by recognising that scene rather than understanding bins. It scores well on held-out data from the same environment and fails the moment any of those cues change. The model was never forced to learn the general concept, because the data never separated the concept from the place."
+      },
+      {
+        "type": "h2",
+        "text": "The dimensions of environmental diversity"
+      },
+      {
+        "type": "h3",
+        "text": "Site and layout"
+      },
+      {
+        "type": "p",
+        "text": "Kitchens, workshops, warehouses and building sites differ in layout, working height, reach distances and floor space. Even within one category — two garment factories, say — station layouts and workflows vary. Recording the same task in several sites is usually worth more than recording one site at length."
+      },
+      {
+        "type": "h3",
+        "text": "Lighting"
+      },
+      {
+        "type": "p",
+        "text": "Daylight through windows, overhead fluorescent tubes, harsh spotlights and dim corners all change colour, contrast and shadow. Night shifts and outdoor work add further variation. Vision models are notoriously sensitive to lighting they have not seen."
+      },
+      {
+        "type": "h3",
+        "text": "Objects and materials"
+      },
+      {
+        "type": "p",
+        "text": "The same task is performed on different instances: a different cup, a heavier sheet, a stiffer fabric, a worn tool. Shape, texture, transparency and deformability all change how an object looks and how it must be handled."
+      },
+      {
+        "type": "h3",
+        "text": "Clutter and background activity"
+      },
+      {
+        "type": "p",
+        "text": "Real sites contain irrelevant objects, partially finished work and other people moving through the frame. Clean demonstration benches teach a model to expect an empty scene, which it will rarely get."
+      },
+      {
+        "type": "h3",
+        "text": "People and technique"
+      },
+      {
+        "type": "p",
+        "text": "Different people perform the same task differently: left- or right-handed, fast or careful, with different grips and different orders of sub-steps. Diversity of operators gives a model a broader notion of what correct execution looks like."
+      },
+      {
+        "type": "h2",
+        "text": "Diversity is not the same as volume"
+      },
+      {
+        "type": "p",
+        "text": "Adding more hours from the same environment increases dataset size without increasing coverage. The useful measure is how many distinct conditions are represented, and how well they match the conditions of deployment. As argued in [What actually makes training data usable](/blog/what-makes-training-data-usable), coverage of the cases a model gets wrong beats raw volume."
+      },
+      {
+        "type": "h2",
+        "text": "Planning coverage"
+      },
+      {
+        "type": "ol",
+        "items": [
+          "List the deployment environments and the factors that vary between them: site type, lighting, objects, clutter, operators.",
+          "Decide which factors the model must be robust to and which can be fixed for now.",
+          "Build a coverage matrix — tasks against environment conditions — and set a minimum number of episodes per cell.",
+          "Collect across several sites per task, with several operators per site.",
+          "Hold out at least one entire environment for evaluation, so test scores measure generalisation rather than memorisation."
+        ]
+      },
+      {
+        "type": "callout",
+        "title": "Evaluation matters",
+        "text": "If the test split comes from the same sites as the training split, a model that memorised those sites will look excellent. Holding out whole environments is the simplest way to see whether diversity is working."
+      },
+      {
+        "type": "h2",
+        "text": "Documenting diversity"
+      },
+      {
+        "type": "p",
+        "text": "Diversity is only useful if it is recorded. Each episode should carry metadata — environment type, site identifier, lighting condition, operator identifier (anonymised), objects involved — so teams can filter, rebalance and diagnose failures by condition. Without metadata, a dataset may be diverse in fact but impossible to analyse."
+      },
+      {
+        "type": "h2",
+        "text": "Real environments versus simulation"
+      },
+      {
+        "type": "p",
+        "text": "Domain randomisation in simulation — varying textures, lighting and object placement — is a valuable complement, and it is cheap. But simulated variety is limited to what the simulator models. Real environments contain variation nobody thought to randomise: the reflective film on a sheet of metal, the way fabric bunches on a sewing table, the dust on a site floor. Synthetic data works best alongside real data, a point covered in [Synthetic data is a complement](/blog/synthetic-data-is-a-complement)."
+      },
+      {
+        "type": "h2",
+        "text": "Conclusion"
+      },
+      {
+        "type": "p",
+        "text": "Robots generalise to the extent their training data forces them to. Diversity of site, lighting, objects, clutter and people is what forces a model to learn the task rather than the place. Planned deliberately and documented with metadata, it is one of the highest-leverage investments a robotics data programme can make."
+      },
+      {
+        "type": "p",
+        "text": "Mvaak records real tasks across homes, workshops, factories and building sites for Physical AI teams. See [Physical AI data](/solutions/physical-ai) and [Egocentric Video Data](/services/egocentric-video-data), or read [How Real-World Human Activities Help Train Robotics Systems](/blog/real-world-human-activities-train-robotics)."
+      }
+    ],
+    "readingTime": 4
+  },
+  {
+    "slug": "raw-video-to-training-ready-data-pipeline",
+    "title": "From Raw Video to Training-Ready Data: Understanding the Data Pipeline",
+    "seoTitle": "From Raw Video to Training-Ready Data: The Pipeline",
+    "description": "Hours of footage are not a dataset. The stages that turn raw video into training-ready data: ingest, sync, segmentation, annotation, QA, delivery.",
+    "category": "AI Data",
+    "tags": [
+      "Data pipeline",
+      "Video data",
+      "Data processing",
+      "LeRobot",
+      "RLDS"
+    ],
+    "date": "2026-11-13",
+    "image": {
+      "src": "/videos/capture/metal-work.jpg",
+      "width": 960,
+      "height": 540,
+      "alt": "First-person frame at a spot-welding station: a co-worker passes a metal panel beside a stack of finished panels."
+    },
+    "blocks": [
+      {
+        "type": "p",
+        "text": "A collection team can come back from a week in the field with terabytes of footage and still have nothing a model can train on. Raw video is a recording. A training-ready dataset is a structured, documented, checked artefact that a training pipeline can load without manual cleanup. Most of the cost and most of the risk sit between the two."
+      },
+      {
+        "type": "p",
+        "text": "This article walks through the stages of a typical video data pipeline, with a focus on egocentric video for robotics and computer vision, and what can go wrong at each one."
+      },
+      {
+        "type": "h2",
+        "text": "Stage 1: Ingestion and integrity"
+      },
+      {
+        "type": "p",
+        "text": "Files arrive from many devices, often in batches, sometimes with interrupted uploads. The first stage registers every file, verifies checksums, extracts technical metadata (resolution, frame rate, codec, duration) and links each file to a capture session: who recorded it, where, on which rig, under which consent record. Anything that cannot be linked to a session is quarantined rather than processed. Problems missed here propagate through every later stage."
+      },
+      {
+        "type": "h2",
+        "text": "Stage 2: Synchronisation"
+      },
+      {
+        "type": "p",
+        "text": "If a session includes more than one stream — video plus IMU, stereo pairs, multiple cameras — the streams must be placed on a shared timeline. Device clocks drift, recordings start at slightly different moments and frame rates can vary. Synchronisation uses hardware timestamps where available and alignment signals (a visible clap, a sharp motion visible in both video and IMU) where not. The result should be verified on a sample of every session, because a small offset silently corrupts every model trained on the data."
+      },
+      {
+        "type": "h2",
+        "text": "Stage 3: Normalisation"
+      },
+      {
+        "type": "p",
+        "text": "Footage is converted to consistent formats: a standard codec and container, a fixed frame rate if the training stack requires one, and lens calibration files attached so wide-angle footage can be undistorted. Normalisation should never discard the original; derived files are reproducible, originals are not."
+      },
+      {
+        "type": "h2",
+        "text": "Stage 4: Privacy and compliance"
+      },
+      {
+        "type": "p",
+        "text": "Real-world footage contains bystanders, screens, documents and locations. Depending on the project and jurisdiction, faces or other identifying details may need to be blurred, segments removed, or audio stripped. Consent records are checked against each session. This stage belongs early in the pipeline: annotating footage that later has to be removed is wasted work."
+      },
+      {
+        "type": "h2",
+        "text": "Stage 5: Episode segmentation"
+      },
+      {
+        "type": "p",
+        "text": "Continuous recordings are cut into episodes: one instance of one task, with a defined start and end. Episode boundaries need written rules — does the episode begin when the hand starts moving or when the object first appears? — because inconsistent boundaries produce inconsistent training examples. Episodes that are incomplete, heavily blurred or off-task are flagged here."
+      },
+      {
+        "type": "h2",
+        "text": "Stage 6: Annotation"
+      },
+      {
+        "type": "p",
+        "text": "Within each episode, annotators add the labels the model needs. For robotics and egocentric video these typically include:"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Temporal sub-action segments (reach, grasp, lift, move, place, release) on a single timeline.",
+          "Object labels, as boxes or masks on keyframes or tracked across frames.",
+          "Hand annotations: left/right, contact state, sometimes keypoints.",
+          "Natural-language descriptions of the task or each step, for vision-language training.",
+          "Episode-level attributes: success or failure, environment, objects involved."
+        ]
+      },
+      {
+        "type": "p",
+        "text": "Each label type needs its own guideline section. The guideline is the single most important control on quality — see [Annotation guidelines are the real deliverable](/blog/annotation-guidelines-are-the-real-deliverable)."
+      },
+      {
+        "type": "h2",
+        "text": "Stage 7: Quality assurance"
+      },
+      {
+        "type": "p",
+        "text": "QA checks that the data matches what was agreed. It operates at several levels: automated checks (no gaps in timelines, segments within episode bounds, no orphaned labels), sampled human review against the guideline, agreement measurement between annotators, and acceptance testing of each delivery against agreed criteria. Failed items return to annotation with a reason. We look at QA in depth in [The Importance of Data Quality Assurance in AI Training](/blog/data-quality-assurance-ai-training)."
+      },
+      {
+        "type": "h2",
+        "text": "Stage 8: Packaging and delivery"
+      },
+      {
+        "type": "p",
+        "text": "Finally, data is exported in the format the client’s training stack expects — for robot learning, formats such as LeRobot, RLDS or MCAP are common — together with a manifest, the annotation guideline version, calibration files and a datasheet describing collection conditions, known limitations and licensing. A dataset without documentation is hard to trust and harder to reuse."
+      },
+      {
+        "type": "h2",
+        "text": "Where pipelines usually fail"
+      },
+      {
+        "type": "ol",
+        "items": [
+          "Synchronisation assumed instead of verified.",
+          "Episode boundaries left to individual judgment.",
+          "Privacy review done after annotation, forcing rework.",
+          "Guidelines that change mid-project without re-checking earlier batches.",
+          "No versioning, so nobody can say which labels a model was trained on."
+        ]
+      },
+      {
+        "type": "callout",
+        "title": "Version everything",
+        "text": "Raw files, derived files, guidelines and label sets should all carry versions. When a model behaves unexpectedly, the first question is always which data it saw."
+      },
+      {
+        "type": "h2",
+        "text": "Conclusion"
+      },
+      {
+        "type": "p",
+        "text": "Turning raw video into training-ready data is an engineering process with distinct stages, each with its own failure modes. The teams that get the most from video data treat the pipeline as a product: documented, versioned and checked at every step."
+      },
+      {
+        "type": "p",
+        "text": "Mvaak runs this pipeline end to end for egocentric and video datasets — capture, segmentation, annotation, QA and delivery. See [Egocentric Video Data](/services/egocentric-video-data) and [Physical AI data](/solutions/physical-ai), or start with [What Is Egocentric Data and Why Does Physical AI Need It?](/blog/what-is-egocentric-data-physical-ai)."
+      }
+    ],
+    "readingTime": 4
+  },
+  {
+    "slug": "stereo-vs-mono-rgb-capture",
+    "title": "Stereo vs Mono-RGB Capture: Applications in Computer Vision and Robotics",
+    "seoTitle": "Stereo vs Mono-RGB Capture for CV and Robotics",
+    "description": "Mono-RGB scales; stereo measures depth. How the two capture setups differ, what each enables in computer vision and robotics, and how to choose.",
+    "category": "Computer Vision",
+    "tags": [
+      "Stereo vision",
+      "Mono-RGB",
+      "Depth estimation",
+      "Capture rigs"
+    ],
+    "date": "2026-11-13",
+    "image": {
+      "src": "/videos/capture/tiles.jpg",
+      "width": 960,
+      "height": 540,
+      "alt": "First-person frame at a tiling site: hands handling a thin line along a white wall above an unfinished floor."
+    },
+    "blocks": [
+      {
+        "type": "p",
+        "text": "Choosing a capture rig is one of the first decisions in any video data project, and one of the hardest to undo. A single RGB camera is cheap, light and easy to deploy at scale. A stereo pair adds a second, calibrated camera and, with it, the ability to recover depth from geometry. Which one a project needs depends on what the model must understand about space — and on what it will see at deployment."
+      },
+      {
+        "type": "h2",
+        "text": "Mono-RGB: one camera, colour images"
+      },
+      {
+        "type": "p",
+        "text": "Mono-RGB capture records standard colour video from a single lens. It is the most common format in computer vision, and most pretrained models expect it. Mono rigs are small, inexpensive and simple to synchronise with other sensors, which makes them practical for large, distributed collection."
+      },
+      {
+        "type": "p",
+        "text": "The limitation is depth. A single image cannot distinguish a small object close to the camera from a large object far away without additional cues. Monocular depth-estimation models infer depth from learned priors — familiar object sizes, perspective, shading — and can be surprisingly good, but their output is relative or approximate rather than measured."
+      },
+      {
+        "type": "h2",
+        "text": "Stereo: two cameras, depth from disparity"
+      },
+      {
+        "type": "p",
+        "text": "A stereo rig places two cameras a known distance apart (the baseline). Points in the scene appear at slightly different horizontal positions in the left and right images; that difference, the disparity, is inversely related to distance. With calibrated cameras, disparity converts to metric depth. This is the same principle human vision uses."
+      },
+      {
+        "type": "h3",
+        "text": "What stereo requires"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Calibration: intrinsic parameters for each camera and the precise relative pose between them, rechecked if the rig is knocked.",
+          "Hardware synchronisation, so both images are captured at the same instant; otherwise motion creates false disparity.",
+          "Texture in the scene. Plain white walls and reflective surfaces give matching algorithms little to work with.",
+          "A baseline suited to the working distance: a wider baseline improves depth precision at range, a narrower one suits close work."
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Applications in computer vision"
+      },
+      {
+        "type": "p",
+        "text": "For classification, detection and most activity recognition, mono-RGB is usually sufficient and far easier to scale. Stereo becomes valuable when the task depends on geometry: estimating object size, measuring distances, reconstructing scenes in 3D, or producing ground-truth depth to train and evaluate monocular depth models. A common pattern is to collect a smaller stereo dataset alongside a larger mono one, using the stereo data for supervision and evaluation."
+      },
+      {
+        "type": "h2",
+        "text": "Applications in robotics"
+      },
+      {
+        "type": "p",
+        "text": "Robots act in metric space. To grasp an object, a manipulator needs to know where it is in three dimensions, not just in the image. Stereo — or another depth source — provides that directly, which is why many robot heads and wrists carry stereo cameras."
+      },
+      {
+        "type": "p",
+        "text": "For training data, the principle is to match the deployed sensor where possible. If the robot perceives through a stereo head, egocentric stereo recordings of humans performing the task give a model inputs with the same structure it will see at run time. If the robot uses a single wrist camera, mono-RGB egocentric data is the natural fit, and depth can be added from other sensors."
+      },
+      {
+        "type": "h3",
+        "text": "Hand–object interaction"
+      },
+      {
+        "type": "p",
+        "text": "Close-range manipulation is where stereo earns its cost. Whether fingers are in contact with an object or just in front of it is often ambiguous in a single image. Depth resolves it. For datasets focused on grasping and fine manipulation, stereo or depth data can substantially improve the reliability of contact labels."
+      },
+      {
+        "type": "h2",
+        "text": "Cost and scale trade-offs"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Hardware: stereo rigs cost more and are bulkier, which matters for wearable capture.",
+          "Storage: two video streams roughly double raw storage.",
+          "Processing: rectification and disparity computation add pipeline stages and QA checks.",
+          "Annotation: depth can make some labels easier (contact, 3D boxes) but adds label types to manage.",
+          "Coverage: a cheaper mono rig can reach more environments for the same budget."
+        ]
+      },
+      {
+        "type": "callout",
+        "title": "Decision rule",
+        "text": "Choose stereo when the model must reason about metric distance or contact, or when the deployed robot sees in stereo. Otherwise, mono-RGB with broad environmental coverage usually delivers more value per unit of budget."
+      },
+      {
+        "type": "h2",
+        "text": "Hybrid approaches"
+      },
+      {
+        "type": "p",
+        "text": "Many programmes combine the two: broad mono-RGB collection for diversity, plus a targeted stereo subset for depth supervision and evaluation. Others pair a mono egocentric camera with a fixed stereo or depth camera in the scene. The right mix depends on whether depth is needed at training time, evaluation time or both. Environmental breadth is discussed further in [Why Environmental Diversity Matters in Robotics Training Datasets](/blog/environmental-diversity-robotics-datasets)."
+      },
+      {
+        "type": "h2",
+        "text": "Conclusion"
+      },
+      {
+        "type": "p",
+        "text": "Mono-RGB and stereo capture serve different purposes. Mono scales; stereo measures. For most computer vision tasks, mono-RGB with good coverage is the efficient default. For robotics, where models act in metric space and contact matters, stereo or another depth source often pays for itself — particularly when it matches the robot’s own sensors."
+      },
+      {
+        "type": "p",
+        "text": "Mvaak selects capture rigs per project for egocentric data collection. See [Egocentric Video Data](/services/egocentric-video-data) for the capture options, or read [Egocentric Video vs Third-Person Video](/blog/egocentric-vs-third-person-video)."
+      }
+    ],
+    "readingTime": 4
+  },
+  {
+    "slug": "data-quality-assurance-ai-training",
+    "title": "The Importance of Data Quality Assurance in AI Training",
+    "seoTitle": "Data Quality Assurance in AI Training Data",
+    "description": "How quality assurance for AI training data works — acceptance criteria, automated checks, sampled review, agreement and feedback loops.",
+    "category": "Dataset Quality",
+    "tags": [
+      "Quality assurance",
+      "Data quality",
+      "Acceptance criteria",
+      "Annotation review"
+    ],
+    "date": "2026-11-13",
+    "image": {
+      "src": "/videos/capture/construction.jpg",
+      "width": 960,
+      "height": 540,
+      "alt": "First-person frame from scaffolding on a building site, the wearer seated beside a concrete column and a mortar pan."
+    },
+    "blocks": [
+      {
+        "type": "p",
+        "text": "When a model underperforms, teams usually look first at architecture and hyperparameters. Often the problem is upstream: mislabelled examples, missing annotations, misaligned sensor streams or episodes that never matched the specification. Data quality assurance is the discipline of catching those problems before they reach training — and of being able to show that a dataset is what it claims to be."
+      },
+      {
+        "type": "p",
+        "text": "This article covers what QA means for AI training data, how a QA process is structured, and how to make it measurable rather than a matter of trust."
+      },
+      {
+        "type": "h2",
+        "text": "Why QA matters more for AI than for most data"
+      },
+      {
+        "type": "p",
+        "text": "In traditional software, a bad record usually causes a visible error. In machine learning, bad data rarely fails loudly. A model trains happily on inconsistent labels and simply becomes less accurate, less calibrated or biased in ways that only surface in production. Because the failure is silent, quality has to be checked deliberately and early."
+      },
+      {
+        "type": "p",
+        "text": "Errors also compound. A systematic labelling mistake in a few percent of examples can shift a model’s decision boundary on exactly the cases that matter. Fixing it later means relabelling, retraining and re-evaluating — far more expensive than catching it at the source."
+      },
+      {
+        "type": "h2",
+        "text": "Start with acceptance criteria"
+      },
+      {
+        "type": "p",
+        "text": "QA needs a target. Before collection or annotation begins, the data provider and the model team should agree in writing what makes an item acceptable. Good acceptance criteria are specific and measurable, for example:"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Every episode contains one complete task instance, with start and end inside the clip.",
+          "Video meets the agreed resolution and frame rate; no dropped segments longer than an agreed threshold.",
+          "Sensor streams are aligned within an agreed tolerance.",
+          "All objects in the agreed classes are labelled; boxes follow the guideline’s tightness rule.",
+          "Temporal boundaries fall within an agreed number of frames of the reference.",
+          "Metadata fields are complete and valid."
+        ]
+      },
+      {
+        "type": "p",
+        "text": "Without criteria like these, QA becomes a negotiation after delivery instead of a check during production."
+      },
+      {
+        "type": "h2",
+        "text": "The layers of a QA process"
+      },
+      {
+        "type": "h3",
+        "text": "Automated checks"
+      },
+      {
+        "type": "p",
+        "text": "Machines are good at structural validation: file integrity, formats, durations, timeline continuity, label schema validity, segments within episode bounds, required metadata present. These checks run on every item, every time, and catch a large share of problems at near-zero cost."
+      },
+      {
+        "type": "h3",
+        "text": "Sampled human review"
+      },
+      {
+        "type": "p",
+        "text": "Reviewers check a defined sample of each batch against the guideline. Sampling is stratified, not random alone: more review for new annotators, difficult classes, unusual environments and anything automated checks flagged. Sample size should be large enough to estimate the batch error rate with reasonable confidence."
+      },
+      {
+        "type": "h3",
+        "text": "Agreement measurement"
+      },
+      {
+        "type": "p",
+        "text": "A portion of items is labelled independently by more than one annotator. Agreement metrics — IoU, boundary distance, category agreement statistics — reveal unclear guideline sections and individual drift. Agreement is the best early signal of label quality because it needs no ground truth; see [Inter-annotator agreement: what it tells you](/blog/inter-annotator-agreement-what-it-tells-you)."
+      },
+      {
+        "type": "h3",
+        "text": "Acceptance testing"
+      },
+      {
+        "type": "p",
+        "text": "Each delivery is tested against the acceptance criteria before release. Batches that fail are reworked, not shipped with caveats."
+      },
+      {
+        "type": "h2",
+        "text": "Closing the loop"
+      },
+      {
+        "type": "p",
+        "text": "QA is only useful if findings change the process. Every rejected item should carry a reason code. Recurring reasons point to guideline gaps, training needs or capture problems, and fixes go back upstream: clearer guideline examples, annotator recalibration, adjusted capture protocols. When the guideline changes, earlier batches affected by the change are re-checked. Our piece on [when annotators disagree](/blog/when-annotators-disagree-the-schema-is-wrong) shows how disagreement often points at the schema rather than the people."
+      },
+      {
+        "type": "h2",
+        "text": "Making quality visible"
+      },
+      {
+        "type": "ol",
+        "items": [
+          "Report error rates per batch, per class and per annotator, not just an overall pass rate.",
+          "Track agreement over time to spot drift early.",
+          "Ship a QA report with every delivery, stating what was checked and how.",
+          "Version the guideline and record which version each label was produced under."
+        ]
+      },
+      {
+        "type": "callout",
+        "title": "A useful habit",
+        "text": "Ask for the QA report before you ask for the data. A provider that cannot describe how quality was measured is asking you to discover it during training."
+      },
+      {
+        "type": "h2",
+        "text": "Conclusion"
+      },
+      {
+        "type": "p",
+        "text": "Data quality assurance turns a dataset from something you hope is right into something you can verify. It rests on agreed acceptance criteria, layered checks, measured agreement and a feedback loop that improves the process over time. For AI systems — especially those deployed in the physical world — that verification is not overhead. It is part of the product."
+      },
+      {
+        "type": "p",
+        "text": "Mvaak labels to a written guideline with multi-stage review and acceptance against agreed criteria. See our [services](/services) and [Physical AI data](/solutions/physical-ai) pages, or read [How High-Quality Data Annotation Improves Computer Vision Models](/blog/data-annotation-improves-computer-vision-models)."
+      }
+    ],
+    "readingTime": 3
+  },
+  {
     "slug": "what-makes-training-data-usable",
     "title": "What actually makes training data usable",
     "description": "Volume is the easiest property to measure and the least predictive of whether a dataset improves a model. Here is what tends to matter instead.",

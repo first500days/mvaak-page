@@ -5,6 +5,7 @@
  */
 import data from "./articles.json";
 
+/** Block text may contain inline links written as [label](/path) — internal paths only. */
 export type ArticleBlock =
   | { type: "p" | "h2" | "h3" | "quote"; text: string }
   | { type: "ul" | "ol"; items: string[] }
@@ -18,6 +19,11 @@ export type Article = {
   /** ISO date (YYYY-MM-DD) as published. */
   date: string;
   readingTime: number;
+  /** Optional <title> override when the headline is too long for search results. */
+  seoTitle?: string;
+  tags?: string[];
+  /** Featured image (also used for social sharing). */
+  image?: { src: string; width: number; height: number; alt: string };
   blocks: ArticleBlock[];
 };
 

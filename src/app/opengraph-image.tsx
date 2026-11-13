@@ -23,12 +23,12 @@ export default function OpengraphImage() {
       >
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           {bars.map((h, i) => (
-            <div key={i} style={{ width: 12, height: h, borderRadius: 6, background: "#8fa8ff" }} />
+            <div key={i} style={{ width: 12, height: h, borderRadius: 6, background: "#558ac4" }} />
           ))}
           <div style={{ marginLeft: 22, fontSize: 52, fontWeight: 700, color: "#ffffff", letterSpacing: -1 }}>mvaak</div>
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 26, letterSpacing: 6, color: "#8fa8ff", textTransform: "uppercase" }}>
+          <div style={{ fontSize: 26, letterSpacing: 6, color: "#9dbfe6", textTransform: "uppercase" }}>
             Egocentric Data · Physical AI · Data Operations
           </div>
           <div style={{ marginTop: 24, fontSize: 76, fontWeight: 700, lineHeight: 1.04, color: "#ffffff", letterSpacing: -2 }}>

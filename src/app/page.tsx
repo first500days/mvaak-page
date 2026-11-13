@@ -1,4 +1,5 @@
 import { Hero } from "@/components/home/hero";
+import { CaptureWorkspace } from "@/components/home/capture-workspace";
 import {
   CapabilitiesSection,
   CaptureMethods,
@@ -12,7 +13,7 @@ import {
 import { AwardsRecognition } from "@/components/home/awards-recognition";
 import { PartnershipPreview } from "@/components/home/partnership-preview";
 import { ContactCta } from "@/components/shared/contact-cta";
-import { BackedByTiles } from "@/components/shared/backed-by";
+import { BackedByMarquee } from "@/components/shared/backed-by";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -31,6 +32,7 @@ export const metadata = pageMetadata({
 export default function HomePage() {
   return (
     <>
+      <CaptureWorkspace />
       <Hero />
       <StatsStrip />
       <SampleGallery />
@@ -41,7 +43,7 @@ export default function HomePage() {
       <CapabilitiesSection />
       <Section id="backed-by" tone="canvas" bordered labelledBy="backed-by-title">
         <SectionHeader id="backed-by-title" eyebrow="Institutional support" title="We are backed by" align="center" className="mx-auto" />
-        <BackedByTiles className="mt-10" />
+        <BackedByMarquee className="mt-10" />
       </Section>
       <AwardsRecognition />
       <PartnershipPreview />

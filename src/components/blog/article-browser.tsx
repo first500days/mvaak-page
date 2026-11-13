@@ -17,7 +17,7 @@ export function ArticleBrowser({ articles, categories }: { articles: Summary[]; 
     return articles.filter(
       (a) =>
         (!category || a.category === category) &&
-        (!q || `${a.title} ${a.description} ${a.category}`.toLowerCase().includes(q)),
+        (!q || `${a.title} ${a.description} ${a.category} ${(a.tags ?? []).join(" ")}`.toLowerCase().includes(q)),
     );
   }, [articles, query, category]);
 
@@ -41,7 +41,7 @@ export function ArticleBrowser({ articles, categories }: { articles: Summary[]; 
                 )}
               >
                 {c ?? "All"}
-                <span className={cn("font-mono text-xs", active ? "text-white/70" : "text-faint")}>{c ? counts(c) : articles.length}</span>
+                <span className={cn("font-mono text-xs", active ? "text-white" : "text-faint")}>{c ? counts(c) : articles.length}</span>
               </button>
             );
           })}
@@ -79,7 +79,7 @@ export function ArticleBrowser({ articles, categories }: { articles: Summary[]; 
       {results.length > 0 ? (
         <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {results.map((a) => (
-            <ArticleCard key={a.slug} article={{ ...a, blocks: [] }} headingLevel="h3" />
+            <ArticleCard key={a.slug} article={a} headingLevel="h3" />
           ))}
         </div>
       ) : (

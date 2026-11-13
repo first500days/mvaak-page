@@ -22,6 +22,8 @@ export function pageMetadata({
   publishedTime,
   absoluteTitle,
   noindex = false,
+  image,
+  keywords,
 }: {
   /** Page title; the root template appends " · Mvaak". */
   title: string;
@@ -32,9 +34,14 @@ export function pageMetadata({
   /** Use the title as-is, without the " · Mvaak" suffix. */
   absoluteTitle?: boolean;
   noindex?: boolean;
+  /** Page-specific share image (defaults to the site-wide one). */
+  image?: { url: string; width: number; height: number; alt: string };
+  keywords?: string[];
 }): Metadata {
   const fullTitle = absoluteTitle ? title : `${title} · ${site.name}`;
+  const images = [image ?? shareImage];
   return {
+    ...(keywords?.length ? { keywords } : {}),
     title: absoluteTitle ? { absolute: title } : title,
     description,
     alternates: { canonical: path },
@@ -46,9 +53,9 @@ export function pageMetadata({
       type,
       siteName: site.name,
       locale: "en_IN",
-      images: [shareImage],
+      images,
       ...(publishedTime ? { publishedTime } : {}),
     },
-    twitter: { card: "summary_large_image", title: fullTitle, description, images: [shareImage] },
+    twitter: { card: "summary_large_image", title: fullTitle, description, images },
   };
 }

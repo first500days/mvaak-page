@@ -38,9 +38,13 @@ On the site they appear under a neutral heading, **"Institutional support & asso
 
 ### 2a. "We are backed by" logo strip (homepage, and `/about#recognition`), must confirm
 
-The client supplied a screenshot showing six logos: IIT Kanpur · IIT Kanpur Incubation & Innovation · Startup India · IndiaAI · MeitY · JSS AHER Mysuru. JSS was removed at the client’s request, so five logos now appear on the site, in `src/components/shared/backed-by.tsx`, with the image files in `public/images/recognition/logo-*.png`.
+The client supplied a screenshot showing six logos: IIT Kanpur · IIT Kanpur Incubation & Innovation · Startup India · IndiaAI · MeitY · JSS AHER Mysuru. JSS was removed at the client’s request, so five logos now appear on the site, in `src/components/shared/backed-by.tsx`, with the image files in `public/images/recognition/backer-*.png`. Since November 2026 they appear as a moving logo strip (a marquee).
 
-- **The logos were cropped from that screenshot, so they are low resolution.** Replace them with the original logo files.
+- **Logo files (Nov 2026).** The old screenshot crops have been deleted. The current files are the higher-resolution originals the client supplied, trimmed and exported without recolouring or stretching. For the incubation centre, only the middle mark was cut from its official three-part logo, because the IIT Kanpur seal already has its own tile. These files were not downloaded from the organisations’ own brand pages. Confirm they are the current official versions, or supply files from the official sources.
+- **What the evidence on file supports:**
+  - **IndiaAI:** the award photos (IndiaAI Innovation Challenge, cheque made out to Narottam Innovations) and Mvaak’s own YouTube video about the IndiaAI grant.
+  - **IIT Kanpur, MeitY and Startup India:** listed under “Backed by” in the brochure.
+  - **Incubation centre:** Startup Incubation and Innovation Centre (SIIC), IIT Kanpur, appears only in the client’s screenshot, with no other evidence on file.
 - **The two sources list different backers.** The brochure lists MIT, NTU Singapore and SMU; the screenshot adds IndiaAI and JSS. Confirm which list is current.
 - **Confirm Mvaak's relationship with each organisation, and its permission to use the logo.** If any one cannot be confirmed, remove it from `backers`.
 
@@ -159,7 +163,7 @@ The page separates what Mvaak’s brochure describes from what still needs confi
 - **Legal entity.** The footer now reads "© 2026 Mvaak | All rights reserved | Narottam Innovations Pvt Ltd", which indicates that Narottam Innovations is Mvaak's legal entity. If so, the recognition wording in 2b can be strengthened, once confirmed.
 - **Privacy Policy.** The footer links to the existing `/privacy` page, which is a website privacy notice drafted from the brochure (see section 6). It still needs legal review and approval as the official Privacy Policy.
 - **"Start Here" column.** It shows only the supplied text, "Good to go".
-- **MeitY logo.** `logo-meity.png` has a mouse pointer baked in from the source screenshot. Replace it with the original logo file.
+- **MeitY logo.** Resolved in Nov 2026: replaced with a clean, high-resolution file (`backer-meity.png`).
 
 ## 11. Partnership application form, approval needed
 
@@ -209,7 +213,7 @@ All homepage copy lives in `src/content/home.ts`. Unconfirmed items are either h
 - **Real Mvaak sample clips** (MP4 + WebM, short, muted, with a poster frame). Every gallery card currently shows an *illustrative* still. Categories still without any asset, which are hidden until supplied: kitchen tasks, retail operations, warehouse operations, food preparation, agriculture, and cleaning & maintenance.
 - **Photos or clips of the capture rigs**: egocentric head-mount, stereo setup, mono-RGB third-person, and IMU/wearable. The capture cards are text-only until these arrive.
 - **Environment photos**: optional, since the environment cards currently use icons.
-- **Higher-resolution backer logos**: the current ones are cropped from a screenshot, and the MeitY logo includes a mouse pointer.
+- **Higher-resolution backer logos**: supplied and in use since Nov 2026 (see 2a).
 - **App Store and Google Play listing URLs**: none exist anywhere in the project, so no store badges are shown.
 
 **Figures and claims to confirm:**
@@ -222,10 +226,10 @@ All homepage copy lives in `src/content/home.ts`. Unconfirmed items are either h
 
 **Integrated (`public/videos/capture/`, about 1 MB per clip as 960×540 MP4 + WebM, 8 s each, with poster frames):**
 - **Source:** eight recordings in `Downloads`, each a real first-person capture lasting 3 minutes (1920×1080, 30 fps, HEVC, wide-angle wearable camera):
-  - `metal-plant-2.mp4`, `sewing-2.mp4`, `Handloom.mp4`, `Beedi-1.mp4`
+  - `metal-plant-2.mp4`, `sewing-2.mp4`, `Handloom.mp4`, `metal-work-2.mp4`
   - `household work.mp4`, `construction-work.mp4`, `tiles-work-2.mp4`, `battery-2.mp4`
-- **Gallery clips** (one per recording): `metal-plant` (44 s), `sewing` (22 s), `handloom` (44 s), `beedi` (110 s), `household` (1 s), `construction` (22 s), `tiles` (88 s), `battery` (152 s). The number in brackets is where the excerpt starts in the source.
-- **Hero, capture demos and services** use separate segments from the same recordings. The hero and the "Robotics & Physical AI" service card share `demo-machine`; the beedi and handloom service cards reuse their gallery clips.
+- **Gallery clips** (one per recording): `metal-plant` (44 s), `sewing` (22 s), `handloom` (44 s), `metal-work` (33 s), `household` (1 s), `construction` (22 s), `tiles` (88 s), `battery` (152 s). The number in brackets is where the excerpt starts in the source.
+- **Hero, capture demos and services** use separate segments from the same recordings. The hero and the "Robotics & Physical AI" service card share `demo-machine`; the metal-work and handloom service cards reuse their gallery clips.
   - `demo-machine` from the metal plant at 132 s
   - `demo-sewing` at 110 s
   - `demo-trowel` from the construction site at 88 s
@@ -233,7 +237,7 @@ All homepage copy lives in `src/content/home.ts`. Unconfirmed items are either h
 - **Confirm before publishing:**
   1. The footage is Mvaak's own and cleared for public use.
   2. Every person visible on camera, including co-workers and passers-by, consented to appear on the website.
-  3. The workplaces (metal plant, garment factory, handloom and beedi workshops, building sites, storage floor) agree to being shown.
+  3. The workplaces (metal plant, garment factory, handloom workshop, spot-welding station, building sites, storage floor) agree to being shown.
   4. The task descriptions are accurate. They were written from viewing the footage: for example, the battery clip is described only as "Moving a pallet jack" on an "Industrial storage floor".
 - **Locations:** the clips carry no location tags because none were supplied. Flambra-style city pins can be added once the location of each recording is confirmed.
 - **Removed:** the agriculture footage and its annotated overlay (`public/videos/egocentric/agri-*`), and with it the homepage "Annotated sample" section. The new recordings have no annotation overlay, and adding one would be fabricated.
@@ -245,3 +249,41 @@ All homepage copy lives in `src/content/home.ts`. Unconfirmed items are either h
 - **Mono-RGB third-person clips.** All eight new recordings are first-person, so the mono-RGB gallery stays hidden.
 - **A real annotated export** (labels, segments or hand/object tracks from the annotation tool), to bring back an annotated-sample section honestly.
 - **Stereo-rig and wearable/IMU capture footage**, if these are offered.
+
+## 16. Interactive hero, brand colour, logo strip and nine new articles (Nov 2026)
+
+**Interactive hero** (`src/components/home/hero-console.tsx`, data in `src/content/hero-demo.ts`):
+- **Footage:** six real 8-second clips from the November recordings (section 15). Each one is shown under a task name: object handling, kitchen, warehouse, garment work, fine handwork, construction.
+- **Annotations are a demonstration.** The website team placed them by hand after viewing the footage: action segments at 1-second resolution, and object boxes on each clip’s first frame only. They are badged “Demo labels · hand-placed”, and a caption under the console says they are not model output. Replace them with real exports from Mvaak’s annotation tool when available.
+- **Tasks without footage:** product sorting and packaging, which the brief asked for. They are not offered until real clips exist.
+- **Timecode:** the REC timecode is the real position within each 3-minute source recording.
+
+**Brand colour and logo:**
+- **Logo shape is unchanged.** The supplied logo has the same bar geometry as the existing mark (five bars, with heights in the ratio 40:56:72).
+- **Colour:** the blue sampled from the logo is `#558AC4`. It is now `--color-brand`, used for the mark, the favicon, the Apple touch icon and the 512px structured-data logo.
+- **Text and buttons:** `#558AC4` gives only 3.6:1 contrast against white, so blue text and white-on-blue buttons use a deeper shade of the same hue, `#3A6EA8` (5.3:1, which passes WCAG AA).
+- **Wordmark:** unchanged, because only the symbol was supplied.
+
+**Nine new articles** (`src/content/articles.json`, dated 13 Nov 2026):
+- **Images:** featured images are Mvaak’s own capture posters. The annotation article uses the illustrative screwdriver frame, which is labelled as illustrative in its alt text.
+- **Claims:** no statistics are given. The only claims about Mvaak are services already described on the site.
+- **Before publishing:** confirm the publication date and that Mvaak is credited as the author.
+
+**Stats:** “1 lakh+” now reads “100,000+”.
+
+**Build note:** a Turbopack build once served stale CSS from `.next/cache`. If a style change does not appear after `npm run build`, delete `.next/cache` and build again.
+
+## 17. Data explorer above the hero, and the Beedi footage removed (Nov 2026)
+
+- **Removed:** all Beedi footage, at the client’s request. The files are deleted and no reference remains in code, content or page HTML. The gallery card, the service-02 visual, the hero’s fifth task (now “Machine tending”) and the featured image of the raw-video blog post now use `metal-work-2.mp4` from 33 s.
+- **New section:** a data explorer at the top of the homepage, directly below the navigation (`src/components/home/data-explorer.tsx`, data in `src/content/explorer-demo.ts`, clips in `public/videos/explorer/`). The existing hero sits unchanged below it.
+- **Explorer clips:**
+  - Object handling: `metal-plant-2` from 88 s
+  - Kitchen activities: `household work` from 66 s
+  - Household tasks: `Wipe Dining Table.mov` from 160 s
+  - Machine tending: `metal-work-2` from 0 s
+  - Warehouse operations: `battery-2` from 110 s
+- **Not shown, because no footage exists:** Product sorting and Packaging. A `metal-work-2` segment that showed parts being carried past a stack was not used for “Product stacking”, because it does not show stacking.
+- **Annotations:** action segments and object boxes on two exact keyframes per clip (0 s and 4 s). They were placed by hand as a demonstration and are labelled as such.
+- **Confirm before publishing:** consent and provenance for `Wipe Dining Table.mov` and `metal-work-2.mp4`, the same as section 15.
+- **Duplicate file:** `battery-2 (1).mp4` in Downloads is a byte-identical copy of `battery-2.mp4`.

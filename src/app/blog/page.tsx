@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Section } from "@/components/ui/section";
@@ -54,8 +55,14 @@ export default function BlogIndexPage() {
                 {featured.readingTime} min read
               </p>
             </div>
-            <div className="hidden items-end border-l border-navy-line bg-navy-2 p-10 lg:flex">
-              <p className="inline-flex items-center gap-2 font-medium text-white">
+            <div className="relative hidden items-end overflow-hidden border-l border-navy-line bg-navy-2 p-10 lg:flex">
+              {featured.image && (
+                <>
+                  <Image src={featured.image.src} alt="" fill sizes="35vw" className="object-cover opacity-70 transition-transform duration-500 group-hover:scale-[1.03]" />
+                  <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent" />
+                </>
+              )}
+              <p className="relative inline-flex items-center gap-2 font-medium text-white">
                 Read the article <ArrowRight aria-hidden className="size-4 transition-transform group-hover:translate-x-1" />
               </p>
             </div>
@@ -67,7 +74,7 @@ export default function BlogIndexPage() {
         <h2 id="all-articles" className="sr-only">
           All articles
         </h2>
-        <ArticleBrowser articles={summaries} categories={articleCategories} />
+        <ArticleBrowser articles={summaries} categories={articleCategories.filter((c) => summaries.some((a) => a.category === c))} />
       </Section>
 
       <ContactCta
