@@ -189,3 +189,59 @@ The Contact Us form now sends each lead to the "Contact Leads" Apps Script, thro
 | jobTitle | Job title (optional) |
 | inquiryType | Request type and project type, e.g. "Discuss a project — Egocentric video & human-demonstration data" |
 | projectDetails | The description, followed by every other answered field ("Engagement model: …", "Environments: …" and so on), then the reference number and the page the lead was submitted from |
+
+## 13. Delete Account page (`/delete-account`), confirm before publishing
+
+The page was built for the Google Play and App Store account-deletion requirement. All of its copy lives in `src/content/account-deletion.ts`. The following items were supplied in the brief and are **not verified** against the app or company policy:
+
+1. **Timelines:** a verification email within 48 hours; deactivation after verification; deletion from active systems within 30 days; deletion from backups within 90 days; pending payouts settled before closure.
+2. **In-app steps:** Profile → Settings → Account → Delete account, a one-time code, and "Permanently delete" with a confirmation email. These must match the shipped app exactly, because store reviewers check them.
+3. **Data categories:** the "Deleted" and "Kept, where required" lists, including payouts, invoices and contributor agreements, must match what the app actually stores.
+4. **privacy@mvaak.com:** this mailbox must exist and be monitored.
+5. **Delivery:** requests are emailed through Resend, so `RESEND_API_KEY` and a verified sending domain are needed. Until those are set, the form tells visitors the request could not be sent and offers a pre-filled email instead. It never shows a false success message.
+6. **Duplicate check:** the one-pending-request-per-email check is held in server memory, so it resets when the server restarts.
+
+## 14. Homepage redesign: assets and confirmations needed
+
+All homepage copy lives in `src/content/home.ts`. Unconfirmed items are either hidden or labelled on the page.
+
+**Assets to supply** (add the paths in `home.ts`; nothing else needs to change):
+- **Real Mvaak sample clips** (MP4 + WebM, short, muted, with a poster frame). Every gallery card currently shows an *illustrative* still. Categories still without any asset, which are hidden until supplied: kitchen tasks, retail operations, warehouse operations, food preparation, agriculture, and cleaning & maintenance.
+- **Photos or clips of the capture rigs**: egocentric head-mount, stereo setup, mono-RGB third-person, and IMU/wearable. The capture cards are text-only until these arrive.
+- **Environment photos**: optional, since the environment cards currently use icons.
+- **Higher-resolution backer logos**: the current ones are cropped from a screenshot, and the MeitY logo includes a mouse pointer.
+- **App Store and Google Play listing URLs**: none exist anywhere in the project, so no store badges are shown.
+
+**Figures and claims to confirm:**
+- **Stats** come from the brochure ("capacity position as of August 2026"): 6 → 18 states, 250 trained collectors, 40+ environment types and 12+ languages. Hours delivered, daily capacity and tasks captured are hidden until real figures exist.
+- **Regions**: India (operations base); the UAE and Singapore (labelled "client engagements delivered", from the brochure's 100+ engagements); and the Philippines, the US, the UK, China, Latin America and other parts of Asia (labelled "target region — confirmed per project"). Confirm each one before any "we operate in" wording is used.
+- **Environments**: offices, industrial and project-specific sites are marked "confirmed during scoping". Retail and kitchens rely on the brochure's "shops and food-service lines".
+- **Capabilities not shown** because they don't appear in Mvaak's materials: blur and motion checks, occlusion checks, and duplicate detection. Add them only if they are part of the actual QA workflow.
+
+## 15. Video-first homepage: footage used and footage still needed
+
+**Integrated (`public/videos/capture/`, about 1 MB per clip as 960×540 MP4 + WebM, 8 s each, with poster frames):**
+- **Source:** eight recordings in `Downloads`, each a real first-person capture lasting 3 minutes (1920×1080, 30 fps, HEVC, wide-angle wearable camera):
+  - `metal-plant-2.mp4`, `sewing-2.mp4`, `Handloom.mp4`, `Beedi-1.mp4`
+  - `household work.mp4`, `construction-work.mp4`, `tiles-work-2.mp4`, `battery-2.mp4`
+- **Gallery clips** (one per recording): `metal-plant` (44 s), `sewing` (22 s), `handloom` (44 s), `beedi` (110 s), `household` (1 s), `construction` (22 s), `tiles` (88 s), `battery` (152 s). The number in brackets is where the excerpt starts in the source.
+- **Hero, capture demos and services** use separate segments from the same recordings. The hero and the "Robotics & Physical AI" service card share `demo-machine`; the beedi and handloom service cards reuse their gallery clips.
+  - `demo-machine` from the metal plant at 132 s
+  - `demo-sewing` at 110 s
+  - `demo-trowel` from the construction site at 88 s
+  - `demo-warehouse` from the battery recording at 66 s
+- **Confirm before publishing:**
+  1. The footage is Mvaak's own and cleared for public use.
+  2. Every person visible on camera, including co-workers and passers-by, consented to appear on the website.
+  3. The workplaces (metal plant, garment factory, handloom and beedi workshops, building sites, storage floor) agree to being shown.
+  4. The task descriptions are accurate. They were written from viewing the footage: for example, the battery clip is described only as "Moving a pallet jack" on an "Industrial storage floor".
+- **Locations:** the clips carry no location tags because none were supplied. Flambra-style city pins can be added once the location of each recording is confirmed.
+- **Removed:** the agriculture footage and its annotated overlay (`public/videos/egocentric/agri-*`), and with it the homepage "Annotated sample" section. The new recordings have no annotation overlay, and adding one would be fabricated.
+- **Thumbnail:** `public/images/services/yt-zshr2sYCAxk.jpg`, from Mvaak's own YouTube video "Audio To Text Transcription Tool by Mvaak".
+- **Not used:** the AI-generated Veo and Pika clips in `Downloads`.
+
+**Still needed from Mvaak** (add each to `src/content/home.ts` and it appears automatically):
+- **Egocentric clips, 6–10 s, muted:** retail and product handling, food preparation, cleaning and maintenance. These categories are hidden until footage exists.
+- **Mono-RGB third-person clips.** All eight new recordings are first-person, so the mono-RGB gallery stays hidden.
+- **A real annotated export** (labels, segments or hand/object tracks from the annotation tool), to bring back an annotated-sample section honestly.
+- **Stereo-rig and wearable/IMU capture footage**, if these are offered.

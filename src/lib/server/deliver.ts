@@ -16,7 +16,7 @@ import { appendFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { appendSheetRow, sheetUrl, type SheetRow } from "./lead-sheets";
 
-export type LeadKind = "inquiry" | "partnership";
+export type LeadKind = "inquiry" | "partnership" | "deletion";
 
 export type Lead = {
   kind: LeadKind;
@@ -46,6 +46,8 @@ export function configuredChannels(): Channel[] {
 }
 
 function recipients(kind: LeadKind) {
+  // Account deletion requests go to the privacy inbox, never the sales inbox.
+  if (kind === "deletion") return [env("PRIVACY_TO_EMAIL") ?? "privacy@mvaak.com"];
   const fallback = env("LEADS_TO_EMAIL") ?? "team@mvaak.com";
   const value = kind === "partnership" ? (env("PARTNERSHIP_TO_EMAIL") ?? fallback) : fallback;
   return value

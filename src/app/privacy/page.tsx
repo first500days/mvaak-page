@@ -23,7 +23,7 @@ const sections = [
   {
     h: "What we collect",
     p: [
-      "Project inquiries: your name, work email, company, optional job title, and the project details you choose to share.",
+      "Project inquiries: your name, work email, company, optional phone number, what you are looking for, and the project details you choose to share.",
       "Partnership applications: your name, email, phone number, city and country, optional LinkedIn and website links, and information about your team, capabilities, availability and commercial preferences.",
       "We do not ask for identity documents, financial or payment details, or other sensitive personal information through these forms, and no payment is collected through this website.",
     ],

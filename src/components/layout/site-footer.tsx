@@ -14,6 +14,7 @@ const linkColumns = [
       { label: "Partnerships", href: "/partnerships" },
       { label: "Contact Us", href: "/contact" },
       { label: "Privacy Policy", href: "/privacy" },
+      { label: "Delete Account", href: "/delete-account" },
     ],
   },
   {

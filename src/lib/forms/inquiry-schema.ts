@@ -1,105 +1,76 @@
 import { z } from "zod";
-import { engagementModels, projectTypes } from "@/content/services";
 
-/** Shared by the client form and the /api/inquiry route. */
+/** Shared by the Contact Us form and the /api/inquiry route. */
 
-export const modalities = [
-  { id: "rgb-video", label: "RGB video" },
-  { id: "stereo-video", label: "Stereo video" },
-  { id: "imu", label: "IMU / motion" },
-  { id: "hand-pose", label: "Hand tracking / pose" },
-  { id: "eye-tracking", label: "Eye tracking / gaze" },
-  { id: "exocentric", label: "Paired third-person views" },
-  { id: "audio", label: "Audio / speech" },
-  { id: "text", label: "Text" },
-  { id: "unsure", label: "Not sure yet" },
-] as const;
-
-export const environments = [
-  { id: "household", label: "Household" },
-  { id: "commercial", label: "Commercial" },
-  { id: "agricultural", label: "Agricultural" },
-  { id: "warehouse", label: "Warehouse" },
-  { id: "industrial", label: "Industrial" },
+export const lookingForOptions = [
+  { id: "egocentric-video", label: "Egocentric Video Data" },
+  { id: "physical-ai", label: "Robotics & Physical AI" },
+  { id: "computer-vision", label: "Computer Vision Data" },
+  { id: "speech-voice", label: "Speech & Voice AI" },
+  { id: "nlp-llm", label: "NLP & LLM Data" },
+  { id: "annotation", label: "Data Annotation" },
   { id: "other", label: "Other" },
 ] as const;
 
+export type LookingForId = (typeof lookingForOptions)[number]["id"];
+
+/**
+ * Existing links pre-select the dropdown with `?type=` (older project-type ids are kept so
+ * service-page, footer and egocentric-page links continue to work).
+ */
+export const lookingForFromParam: Record<string, LookingForId> = {
+  "egocentric-video": "egocentric-video",
+  "physical-ai": "physical-ai",
+  "data-collection": "physical-ai",
+  "video-annotation": "computer-vision",
+  "computer-vision": "computer-vision",
+  "audio-annotation": "speech-voice",
+  "speech-voice": "speech-voice",
+  "text-annotation": "nlp-llm",
+  "nlp-llm": "nlp-llm",
+  "quality-assurance": "annotation",
+  "annotation-rescue": "annotation",
+  annotation: "annotation",
+  other: "other",
+};
+
 export const requestTypes = [
-  { id: "project", label: "Discuss a project", hint: "Scope a collection or annotation project with us." },
-  { id: "sample", label: "Request a sample", hint: "Availability depends on the data and your requirements — we’ll confirm." },
-] as const;
-
-export const annotationLayerOptions = [
-  { id: "actions", label: "Action labels" },
-  { id: "sub-actions", label: "Sub-action labels" },
-  { id: "objects", label: "Object references" },
-  { id: "segmentation", label: "Task segmentation" },
-  { id: "hand-pose", label: "Hand pose" },
-  { id: "unsure", label: "Not sure yet" },
-] as const;
-
-export const timelines = [
-  { id: "asap", label: "As soon as possible" },
-  { id: "1-3-months", label: "Within 1–3 months" },
-  { id: "3-6-months", label: "Within 3–6 months" },
-  { id: "exploring", label: "Exploring / no fixed date" },
-] as const;
-
-export const engagementOptions = [
-  ...engagementModels.map((m) => ({ id: m.id, label: m.name })),
-  { id: "undecided", label: "Not sure yet" },
+  { id: "project", label: "Project enquiry" },
+  { id: "sample", label: "Sample request" },
 ] as const;
 
 const ids = <T extends readonly { id: string }[]>(list: T) =>
   list.map((x) => x.id) as unknown as [T[number]["id"], ...T[number]["id"][]];
 
-const optionalText = (max: number) => z.string().trim().max(max, `Please keep this under ${max} characters.`).optional().or(z.literal(""));
+/** The visible fields (validated in the browser and again on the server). */
+export const inquiryFields = z.object({
+  name: z.string().trim().min(2, "Please enter your full name.").max(120),
+  email: z.string().trim().email("Enter a valid work email address.").max(200),
+  company: z.string().trim().min(1, "Please enter your company or organisation.").max(160),
+  lookingFor: z.enum(ids(lookingForOptions), { error: "Choose what you are looking for." }),
+  description: z
+    .string()
+    .trim()
+    .min(10, "A sentence or two helps us respond usefully.")
+    .max(4000, "Please keep this under 4,000 characters."),
+  phone: z
+    .string()
+    .trim()
+    .max(30)
+    .refine((v) => v === "" || (/^\+?[\d\s()-]{7,20}$/.test(v) && v.replace(/\D/g, "").length >= 7), "Enter a valid phone number, e.g. +91 98765 43210.")
+    .optional()
+    .default(""),
+});
 
-const optionalUrl = z
-  .string()
-  .trim()
-  .max(500)
-  .refine((v) => v === "" || /^https?:\/\/[^\s.]+\.[^\s]{2,}$/i.test(v), "Enter a full URL starting with https://")
-  .optional();
+export const inquirySchema = inquiryFields.extend({
+  /** "sample" when the visitor arrived from a "Request a sample" link. */
+  requestType: z.enum(ids(requestTypes)).default("project"),
+  /** Honeypot — any value is silently discarded by the API. */
+  website: z.string().max(500).optional(),
+  submissionId: z.string().min(8).max(64),
+  source: z.string().max(200).optional(),
+});
 
-export const inquirySchema = z
-  .object({
-    name: z.string().trim().min(2, "Please enter your name.").max(120),
-    email: z.string().trim().email("Enter a valid work email address.").max(200),
-    company: z.string().trim().min(1, "Please enter your company or organisation.").max(160),
-    jobTitle: optionalText(120),
-    requestType: z.enum(ids(requestTypes)).default("project"),
-    projectType: z.enum(ids(projectTypes), { error: "Choose the closest project type." }),
-    engagementModel: z.enum(ids(engagementOptions)).default("undecided"),
-    modalities: z.array(z.enum(ids(modalities))).min(1, "Select at least one modality, or “Not sure yet”."),
-    environments: z.array(z.enum(ids(environments))).default([]),
-    taskFamilies: optionalText(600),
-    aiApplication: optionalText(600),
-    annotationLayers: z.array(z.enum(ids(annotationLayerOptions))).default([]),
-    deliveryFormat: optionalText(200),
-    existingData: optionalText(600),
-    description: z
-      .string()
-      .trim()
-      .min(20, "A sentence or two helps us respond usefully (20 characters minimum).")
-      .max(4000, "Please keep this under 4,000 characters."),
-    scale: optionalText(200),
-    timeline: z.enum(ids(timelines)).optional().or(z.literal("")),
-    requirements: optionalText(2000),
-    specUrl: optionalUrl,
-    consent: z.literal(true, { error: "Please confirm we may use these details to respond." }),
-    /** Honeypot — any value is silently discarded by the API. */
-    website: z.string().max(500).optional(),
-    submissionId: z.string().min(8).max(64),
-    source: z.string().max(200).optional(),
-  })
-  .superRefine((v, ctx) => {
-    if (v.projectType === "egocentric-video" && v.environments.length === 0) {
-      ctx.addIssue({ code: "custom", path: ["environments"], message: "Select at least one environment." });
-    }
-  });
-
-export type InquiryInput = z.input<typeof inquirySchema>;
 export type Inquiry = z.output<typeof inquirySchema>;
 
 export const labelFor = <T extends readonly { id: string; label: string }[]>(list: T, id?: string) =>

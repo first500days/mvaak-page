@@ -31,5 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { ...page("/blog", 0.7, "weekly"), ...(newestArticle ? { lastModified: newestArticle } : {}) },
     ...articles.map((a) => ({ ...page(`/blog/${a.slug}`, 0.5, "yearly"), lastModified: a.date })),
     page("/privacy", 0.2, "yearly"),
+    // Required by Google Play / App Store reviewers — must stay public and indexable.
+    page("/delete-account", 0.3, "yearly"),
   ];
 }

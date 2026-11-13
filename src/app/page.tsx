@@ -1,10 +1,19 @@
 import { Hero } from "@/components/home/hero";
-import { SolutionsOverview } from "@/components/home/solutions-overview";
-import { EgocentricHighlight } from "@/components/home/egocentric-highlight";
+import {
+  CapabilitiesSection,
+  CaptureMethods,
+  EnvironmentsGrid,
+  HomeFaq,
+  RegionsSection,
+  SampleGallery,
+  ServicesGrid,
+  StatsStrip,
+} from "@/components/home/home-sections";
 import { AwardsRecognition } from "@/components/home/awards-recognition";
 import { PartnershipPreview } from "@/components/home/partnership-preview";
 import { ContactCta } from "@/components/shared/contact-cta";
-import { BackedBy } from "@/components/shared/backed-by";
+import { BackedByTiles } from "@/components/shared/backed-by";
+import { Section, SectionHeader } from "@/components/ui/section";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
@@ -16,25 +25,33 @@ export const metadata = pageMetadata({
 });
 
 /*
- * Homepage — the essentials, with detail one click away via the header menus:
- * hero → institutional backing → solutions → egocentric data → awards & recognitions
- * (video + award photos) → partnerships → contact. The pipeline, data example and
- * quality detail live on /solutions/physical-ai; engagement models on /services.
+ * Homepage journey — what we collect → proof → how → where → services → coverage → depth → trust → FAQ → contact.
+ * All copy and figures come from src/content/home.ts (see the source notes there).
  */
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <section aria-label="Institutional support" className="border-b border-line bg-surface">
-        <div className="container-page py-10">
-          <BackedBy />
-        </div>
-      </section>
-      <SolutionsOverview />
-      <EgocentricHighlight />
+      <StatsStrip />
+      <SampleGallery />
+      <CaptureMethods />
+      <EnvironmentsGrid />
+      <ServicesGrid />
+      <RegionsSection />
+      <CapabilitiesSection />
+      <Section id="backed-by" tone="canvas" bordered labelledBy="backed-by-title">
+        <SectionHeader id="backed-by-title" eyebrow="Institutional support" title="We are backed by" align="center" className="mx-auto" />
+        <BackedByTiles className="mt-10" />
+      </Section>
       <AwardsRecognition />
       <PartnershipPreview />
-      <ContactCta />
+      <HomeFaq />
+      <ContactCta
+        title="Tell us what your robot needs to learn."
+        body="AI labs, robotics companies and research teams: describe the task and where it happens — we’ll help shape the dataset to train on."
+        cta="Discuss Your Project"
+        trackAs="home_final_cta"
+      />
     </>
   );
 }

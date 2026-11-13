@@ -26,6 +26,8 @@ const DEFAULT_PARTNERSHIP_SHEETS_URL =
 const ENDPOINTS: Record<LeadKind, { env: string; fallback?: string }> = {
   inquiry: { env: "CONTACT_SHEETS_URL", fallback: DEFAULT_CONTACT_SHEETS_URL },
   partnership: { env: "PARTNERSHIP_SHEETS_URL", fallback: DEFAULT_PARTNERSHIP_SHEETS_URL },
+  // Account deletion requests: optional log sheet, no default (requests are emailed to the privacy inbox).
+  deletion: { env: "DELETION_SHEETS_URL" },
 };
 
 /** Row sent to the script — flat string properties the script reads by name. */

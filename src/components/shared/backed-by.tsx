@@ -42,3 +42,30 @@ export function BackedBy({ className, title = "We are backed by" }: { className?
     </div>
   );
 }
+
+/** Homepage variant: equal-size white tiles so every logo sits on the same grid and baseline. */
+export function BackedByTiles({ className }: { className?: string }) {
+  return (
+    <ul className={cn("grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5", className)}>
+      {backers.map((b, i) => (
+        <li
+          key={b.src}
+          className={cn(
+            "flex h-28 items-center justify-center rounded-card border border-line bg-surface px-4 sm:h-32 [--logo-scale:0.72] sm:[--logo-scale:0.85]",
+            // Centre the lone fifth tile on two-column phones.
+            i === backers.length - 1 && backers.length % 2 === 1 && "col-span-2 sm:col-span-1",
+          )}
+        >
+          <Image
+            src={b.src}
+            alt={b.alt}
+            width={b.w}
+            height={b.h}
+            style={{ height: `calc(${b.display}rem * var(--logo-scale))` }}
+            className="w-auto max-w-full object-contain"
+          />
+        </li>
+      ))}
+    </ul>
+  );
+}
